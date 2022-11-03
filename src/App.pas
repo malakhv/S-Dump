@@ -49,10 +49,15 @@ const
     { Program option: A file to store program output, long format. }
     OPT_OUT_LONG = '--out';
 
-    {Program option: A limit of bytes processing, short format. }
+    { Program option: A limit of bytes processing, short format. }
     OPT_LIMIT_SHORT = '-l';
-    {Program option: A limit of bytes processing, long format. }
+    { Program option: A limit of bytes processing, long format. }
     OPT_LIMIT_LONG = '--limit';
+
+    { Program option: An offset from file beginning to process, short format. }
+    OPT_OFFSET_SHORT = '-s';
+    { Program option: An offset from file beginning to process, long format. }
+    OPT_OFFSET_LONG = '-offset';
 
 { Program commands }
 const
@@ -65,13 +70,19 @@ var
     AppVer: TSemVer;        // Program version
     AppArgs: TAppArgs;      // Program command line arguments
     AppLogs: TAppLogs;      // Program logs
+
     InputFile: TFileName;   // Input file path
     OutputFile: TFileName;  // Outpot file path
+
     I: Integer;
     Arg: TArgument;
-    Fin, Fout: File;
     Data: Array of Byte;
-    OptLimit: Integer;         // See Limit program option
+    Tmp: String;
+    WasRead: Integer;
+
+    OptLimit: Integer;      // See Limit program option
+    OptOffset: Integer;     // See Offset program option
+
 
 const
     DEF_INDENT = '  ';
@@ -132,6 +143,7 @@ begin
     // Parse input arguments
     AppArgs := TAppArgs.Create();
     AppArgs.ParseArgs();
+    if DEBUG then AppArgs.PrintAll();
 
     // Any actios for testing, if we have it, we'll ignore other
     if AppArgs.Has(CMD_TEST) then
@@ -158,11 +170,28 @@ begin
         PrintHelp(); Exit;
     end;
 
-    // Additional arguments
+    // Program argument: Limit
     if AppArgs.Has(OPT_LIMIT_SHORT, OPT_LIMIT_LONG) then
-        OptLimit := StrToInt(AppArgs.GetValue(OPT_LIMIT_SHORT, OPT_LIMIT_LONG));
+    begin
+        Tmp := AppArgs.GetValue(OPT_LIMIT_SHORT, OPT_LIMIT_LONG);
+        if not Mikhan.Util.StrUtils.IsEmpty(Tmp) then
+            OptLimit := StrToInt(Tmp)
+        else
+            OptLimit := 0;
+    end;
 
-    // Find input file name (first command line argument without value)
+    // Program argument: Offset
+    if AppArgs.Has(OPT_OFFSET_SHORT, OPT_OFFSET_LONG) then
+    begin
+        Tmp := AppArgs.GetValue(OPT_OFFSET_SHORT, OPT_OFFSET_LONG);
+        if not Mikhan.Util.StrUtils.IsEmpty(Tmp) then
+            OptOffset := StrToInt(Tmp)
+        else
+            OptOffset := 0;
+    end;
+
+    // Program argument: input file
+    // (first command line argument without value)
     InputFile := '';
     for I := 0 to AppArgs.Count - 1 do
     begin
@@ -171,9 +200,12 @@ begin
         InputFile := TFileName(Arg.Key);
     end;
     if DEBUG then WriteLn('Input: ', InputFile);
+
+    // Read and print data
     SetLength(Data, 1024);
-    I := LoadData(InputFile, Data, 0, OptLimit);
-    SetLength(Data, I);
+    WasRead := LoadData(InputFile, Data, OptOffset, OptLimit);
+    SetLength(Data, WasRead);
     WriteLn();
     AppLogs.Dump(Data);
+
 end.
