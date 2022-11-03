@@ -9,6 +9,6 @@ Follow you could see main program command line argument and options, to see all 
 * `-h` or `--help` - Prints program help.
 * `FILE_NAME` - A file to process.
 * `-o FILE_NAME` or `--out FILE_NAME` - A file to store result.
-* `-s OFFSET` - An _offset_ or _start of_ from file beginning to process from it.
-* `-c COUNT` - A number of bytes to process.
-* `-s` or `--string` - Represents all data as strings.
+* `-s VALUE` or `--offset VALUE` -  An offset from file beginning to process.
+* `-l VALUE` or `--limit` -  A limit of bytes processing.
+* `--string` - Represents all data as strings.
