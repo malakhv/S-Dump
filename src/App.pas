@@ -206,6 +206,6 @@ begin
     WasRead := LoadData(InputFile, Data, OptOffset, OptLimit);
     SetLength(Data, WasRead);
     WriteLn();
-    AppLogs.Dump(Data);
+    AppLogs.Dump(Data, OptOffset, 0, True);
 
 end.
