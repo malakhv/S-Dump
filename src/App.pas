@@ -49,6 +49,11 @@ const
     { Program option: A file to store program output, long format. }
     OPT_OUT_LONG = '--out';
 
+    {Program option: A limit of bytes processing, short format. }
+    OPT_LIMIT_SHORT = '-l';
+    {Program option: A limit of bytes processing, long format. }
+    OPT_LIMIT_LONG = '--limit';
+
 { Program commands }
 const
 
@@ -66,6 +71,7 @@ var
     Arg: TArgument;
     Fin, Fout: File;
     Data: Array of Byte;
+    OptLimit: Integer;         // See Limit program option
 
 const
     DEF_INDENT = '  ';
@@ -88,9 +94,8 @@ end;
 
 function LoadData(const AFile: TFileName; var Buf: array of byte;
     Offset: Integer; Limit: Integer): Integer;
-var size: Integer;
+var size, fsize: Integer;
     f: File;
-    res: Integer;
 begin
     Result := 0;
     // Check offset
@@ -104,10 +109,10 @@ begin
     // to 1 byte
     AssignFile(f, AFile);
     Reset(f, 1);
-    //size := FileSize(f);
-    //if size > Limit then size := Limit;
-    //if size > Length(Buf) then size := Length(Buf);
+    fsize := FileSize(f);
+    if size > fsize then size := fsize;
     WriteLn('Size: ', size);
+    WriteLn('FSize: ', fsize);
     try
         Seek(f, Offset);
         BlockRead(f, Buf, size, Result);
@@ -153,6 +158,10 @@ begin
         PrintHelp(); Exit;
     end;
 
+    // Additional arguments
+    if AppArgs.Has(OPT_LIMIT_SHORT, OPT_LIMIT_LONG) then
+        OptLimit := StrToInt(AppArgs.GetValue(OPT_LIMIT_SHORT, OPT_LIMIT_LONG));
+
     // Find input file name (first command line argument without value)
     InputFile := '';
     for I := 0 to AppArgs.Count - 1 do
@@ -163,7 +172,7 @@ begin
     end;
     if DEBUG then WriteLn('Input: ', InputFile);
     SetLength(Data, 1024);
-    I := LoadData(InputFile, Data, 50, 0);
+    I := LoadData(InputFile, Data, 0, OptLimit);
     SetLength(Data, I);
     WriteLn();
     AppLogs.Dump(Data);
