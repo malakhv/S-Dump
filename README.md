@@ -1,6 +1,6 @@
 # S-Dump
 
-Small program to see and save to external file a dump (like in hex editors) of any file. It useful to investigate file formats and reverse engineering.
+S-Dump (Small Dump) is a small program to see and save to external file a dump (like in hex editors) of any file. It useful to investigate file formats and reverse engineering.
 
 ## Programm options
 
