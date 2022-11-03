@@ -1,0 +1,21 @@
+#----------------------------------------------------------------#
+#                                                                #
+#                     SACD-Ripper project                        #
+#                                                                #
+#  Copyright (C) 2022 Mikhail Malakhov <malakhv@gmail.com>       #
+#                                                                #
+#  Unauthorized copying of this file, via any medium is          #
+#  strictly prohibited.                                          #
+#                                                                #
+#       Confidential and Proprietary. All Rights Reserved.       #
+#                                                                #
+#----------------------------------------------------------------#
+
+# The app version. This version's format matches to "Semantic
+# Versioning 2.0.0", for more details about this format, please
+# see http://semver.org/
+[version]
+
+MAJOR=0
+MINOR=1
+PATCH=0
