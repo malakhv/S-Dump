@@ -1,0 +1,6 @@
+Small program to see and save to external file a dump (like in
+hex editors) of any file. It useful to investigate file formats
+and reverse engineering.
+                                                               
+Created: 03.11.2022
+Author: Mikhail.Malakhov
