@@ -216,7 +216,7 @@ begin
     end;
     if DEBUG then WriteLn('Input: ', InputFile);
 
-    // Read and print data
+    // The main program action: read and print data
     SetLength(Data, 1024);
     WasRead := LoadData(InputFile, Data, OptOffset, OptLimit);
     SetLength(Data, WasRead);
