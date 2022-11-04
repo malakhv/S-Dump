@@ -39,7 +39,7 @@ const
     APP_AUTHOR = 'Mikhail.Malakhov';
 
     { The common debug flag. }
-    DEBUG = True;
+    DEBUG = False;
 
 { Program command line arguments }
 const
@@ -105,7 +105,14 @@ end;
 { Prints program help. }
 procedure PrintHelp();
 begin
-
+    WriteLn(APP_NAME, ' command line options:');
+    WriteLn(DEF_INDENT, ' -h or --help                  - Display this information.');
+    WriteLn(DEF_INDENT, ' FILE_NAME                     - An input file to process.');
+    WriteLn(DEF_INDENT, ' -s VALUE or --offset VALUE    - An offset from file beginning.');
+    WriteLn(DEF_INDENT, ' -l VALUE or --limit           - A limit of bytes processing.');
+    WriteLn(DEF_INDENT, ' -c or --char                  - Represents all data as a char array.');
+    WriteLn(DEF_INDENT, ' -v or --version               - The program version.');
+    WriteLn();
 end;
 
 function LoadData(const AFile: TFileName; var Buf: array of byte;
