@@ -18,6 +18,11 @@ unit Dump;
 
 interface
 
+const
+
+    { The maximum bytes to processing. }
+    MAX_BYTES = 2048;
+
 type
 
     { The formats of output, hex or char. }
@@ -33,11 +38,6 @@ procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer;
 implementation
 
 uses SysUtils;
-
-const
-
-    { The maximum bytes to processing. }
-    MAX_BYTES = 2048;
 
 { Some stuff to print data }
 const 
