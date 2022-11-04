@@ -59,6 +59,11 @@ const
     { Program option: An offset from file beginning to process, long format. }
     OPT_OFFSET_LONG = '-offset';
 
+    { Program option: Represents all data as a char array, short format. }
+    OPT_CHAR_SHORT = '-c';
+    { Program option: Represents all data as a char array, long format. }
+    OPT_CHAR_LONG = '-char';
+
 { Program commands }
 const
 
@@ -81,6 +86,7 @@ var
 
     OptLimit: Integer;      // See Limit program option
     OptOffset: Integer;     // See Offset program option
+    OptFormat: TOutFormat;   // See Char program option
 
 
 const
@@ -186,6 +192,12 @@ begin
             OptOffset := 0;
     end;
 
+    // Program argument: Char (outpit format, Hex (by default) or Char)
+    if AppArgs.Has(OPT_CHAR_SHORT, OPT_CHAR_LONG) then
+        OptFormat := ofChar
+    else
+        OptFormat := ofHex;
+
     // Program argument: input file
     // (first command line argument without value)
     InputFile := '';
@@ -202,6 +214,6 @@ begin
     WasRead := LoadData(InputFile, Data, OptOffset, OptLimit);
     SetLength(Data, WasRead);
     WriteLn();
-    Dump.Dump(Data, OptOffset, 0, True);
+    Dump.Dump(Data, OptOffset, 0, OptFormat);
 
 end.

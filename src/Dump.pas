@@ -18,8 +18,17 @@ unit Dump;
 
 interface
 
+type
+
+    { The formats of output, hex or char. }
+    TOutFormat = (ofHex, ofChar);
+
 { Prints raw data. }
-procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer; InHex: Boolean);
+procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer); overload;
+
+{ Prints raw data. }
+procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer;
+    Format: TOutFormat); overload;
 
 implementation
 
@@ -51,7 +60,20 @@ begin
     WriteLn(HEADER_SEP);
 end;
 
-procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer; InHex: Boolean);
+procedure PrintChar(Value: Integer);
+begin
+    if Value >= 20 then
+        Write(Char(Value), Char($0))
+    else
+        Write(IntToHex(Value, 2));
+end;
+
+procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer);
+begin
+    Dump(Source, OffSet, Limit, ofHex);
+end;
+
+procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer; Format: TOutFormat);
 var 
     i, col, off, skip: Integer;
     val: Byte;
@@ -86,10 +108,10 @@ begin
         end;
 
         val := Source[i];
-        if (InHex) then
+        if (Format = ofHex) then
             Write(IntToHex(val, 2))
         else
-            Write(val);
+            PrintChar(val);
         Write(' ');
         Dec(Limit);
         if Limit <= 0 then break;
