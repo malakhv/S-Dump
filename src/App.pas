@@ -27,7 +27,7 @@ program sdump;
 {$h+}
 
 uses
-    SysUtils, Mikhan.Util.AppArgs, Mikhan.Util.AppLogs, Mikhan.Util.AppVersion,
+    SysUtils, Dump, Mikhan.Util.AppArgs, Mikhan.Util.AppLogs, Mikhan.Util.AppVersion,
     Mikhan.Util.StrUtils;
 
 const
@@ -69,7 +69,6 @@ const
 var
     AppVer: TSemVer;        // Program version
     AppArgs: TAppArgs;      // Program command line arguments
-    AppLogs: TAppLogs;      // Program logs
 
     InputFile: TFileName;   // Input file path
     OutputFile: TFileName;  // Outpot file path
@@ -137,9 +136,6 @@ end;
 //
 begin
 
-    // Program Logs
-    AppLogs := TAppLogs.Create(APP_NAME);
-
     // Parse input arguments
     AppArgs := TAppArgs.Create();
     AppArgs.ParseArgs();
@@ -206,6 +202,6 @@ begin
     WasRead := LoadData(InputFile, Data, OptOffset, OptLimit);
     SetLength(Data, WasRead);
     WriteLn();
-    AppLogs.Dump(Data, OptOffset, 0, True);
+    Dump.Dump(Data, OptOffset, 0, True);
 
 end.
