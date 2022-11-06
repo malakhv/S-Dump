@@ -70,6 +70,15 @@ const
     { Program command: any actions for testing. }
     CMD_TEST = 'test';
 
+{ Program messages }
+const
+
+    { Program message: No input file. }
+    MSG_NO_INPUT = 'Please, specify source file...';
+
+    { Program message: Input file not found. }
+    MSG_INPUT_NOT_FOUND = 'The source file not found...';
+
 { Global Scope }
 var
     AppVer: TSemVer;        // Program version
@@ -121,6 +130,11 @@ var size, fsize: Integer;
     f: File;
 begin
     Result := 0;
+    // Check file
+    if not FileExists(AFile) then
+    begin
+        WriteLn(MSG_INPUT_NOT_FOUND); Exit;
+    end;
     // Check offset
     if Offset <= 0 then Offset := 0;
     // Check limit. Right now 1024 bytes max
@@ -205,7 +219,7 @@ begin
     else
         OptFormat := ofHex;
 
-    // Program argument: input file
+    // Program argument: Input File
     // (first command line argument without value)
     InputFile := '';
     for I := 0 to AppArgs.Count - 1 do
@@ -215,12 +229,19 @@ begin
         InputFile := TFileName(Arg.Key);
     end;
     if DEBUG then WriteLn('Input: ', InputFile);
+    if Mikhan.Util.StrUtils.IsEmpty(InputFile) then
+    begin
+        WriteLn(MSG_NO_INPUT); Exit;
+    end;
 
     // The main program action: read and print data
     SetLength(Data, MAX_BYTES);
     WasRead := LoadData(InputFile, Data, OptOffset, OptLimit);
-    SetLength(Data, WasRead);
-    WriteLn();
-    Dump.Dump(Data, OptOffset, 0, OptFormat);
+    if WasRead > 0 then
+    begin
+        SetLength(Data, WasRead);
+        WriteLn();
+        Dump.Dump(Data, OptOffset, 0, OptFormat);
+    end;
 
 end.
