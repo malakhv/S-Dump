@@ -18,6 +18,8 @@ unit Dump;
 
 interface
 
+uses SysUtils;
+
 const
 
     { The maximum bytes to processing. }
@@ -35,9 +37,13 @@ procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer); overload
 procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer;
     Format: TOutFormat); overload;
 
+{ Load raw data from file to Buf array. }
+function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
+    var Buf: array of byte): Integer;
+
 implementation
 
-uses SysUtils;
+uses AppMsg;
 
 { Some stuff to print data }
 const 
@@ -118,6 +124,38 @@ begin
     end;
     Writeln('');
 
+end;
+
+function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
+    var Buf: array of byte): Integer;
+var size, fsize: Integer;
+    f: File;
+begin
+    Result := 0;
+    // Check file
+    if not FileExists(AFile) then
+    begin
+        WriteLn(MSG_INPUT_NOT_FOUND); Exit;
+    end;
+    // Check offset
+    if Offset <= 0 then Offset := 0;
+    // Check limit. Right now 1024 bytes max
+    if (Limit <= 0) or (Limit > 1024) then Limit := 1024;
+    size := Length(Buf);
+    if size > Limit then size := Limit;
+
+    // Open inpurt file read and setting up size of read chunk
+    // to 1 byte
+    AssignFile(f, AFile);
+    Reset(f, 1);
+    fsize := FileSize(f);
+    if size > fsize then size := fsize;
+    try
+        Seek(f, Offset);
+        BlockRead(f, Buf, size, Result);
+    finally
+        CloseFile(f);
+    end;
 end;
 
 end.

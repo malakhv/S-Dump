@@ -27,8 +27,7 @@ program sdump;
 {$h+}
 
 uses
-    SysUtils, Dump, Mikhan.Util.AppArgs, Mikhan.Util.AppLogs, Mikhan.Util.AppVersion,
-    Mikhan.Util.StrUtils;
+    SysUtils, Dump, AppMsg, Mikhan.Util.AppArgs, Mikhan.Util.AppVersion, Mikhan.Util.StrUtils;
 
 const
 
@@ -69,15 +68,6 @@ const
 
     { Program command: any actions for testing. }
     CMD_TEST = 'test';
-
-{ Program messages }
-const
-
-    { Program message: No input file. }
-    MSG_NO_INPUT = 'Please, specify source file...';
-
-    { Program message: Input file not found. }
-    MSG_INPUT_NOT_FOUND = 'The source file not found...';
 
 { Global Scope }
 var
@@ -122,40 +112,6 @@ begin
     WriteLn(DEF_INDENT, ' -c or --char                  - Represents all data as a char array.');
     WriteLn(DEF_INDENT, ' -v or --version               - The program version.');
     WriteLn();
-end;
-
-function LoadData(const AFile: TFileName; var Buf: array of byte;
-    Offset: Integer; Limit: Integer): Integer;
-var size, fsize: Integer;
-    f: File;
-begin
-    Result := 0;
-    // Check file
-    if not FileExists(AFile) then
-    begin
-        WriteLn(MSG_INPUT_NOT_FOUND); Exit;
-    end;
-    // Check offset
-    if Offset <= 0 then Offset := 0;
-    // Check limit. Right now 1024 bytes max
-    if (Limit <= 0) or (Limit > 1024) then Limit := 1024;
-    size := Length(Buf);
-    if size > Limit then size := Limit;
-
-    // Open inpurt file read and setting up size of read chunk
-    // to 1 byte
-    AssignFile(f, AFile);
-    Reset(f, 1);
-    fsize := FileSize(f);
-    if size > fsize then size := fsize;
-    WriteLn('Size: ', size);
-    WriteLn('FSize: ', fsize);
-    try
-        Seek(f, Offset);
-        BlockRead(f, Buf, size, Result);
-    finally
-        CloseFile(f);
-    end;
 end;
 
 //
@@ -236,7 +192,7 @@ begin
 
     // The main program action: read and print data
     SetLength(Data, MAX_BYTES);
-    WasRead := LoadData(InputFile, Data, OptOffset, OptLimit);
+    WasRead := LoadData(InputFile, OptOffset, OptLimit, Data);
     if WasRead > 0 then
     begin
         SetLength(Data, WasRead);
