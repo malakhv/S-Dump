@@ -149,7 +149,7 @@ begin
     // Check offset
     if Offset <= 0 then Offset := 0;
     // Check limit. Right now 1024 bytes max
-    if (Limit <= 0) or (Limit > 1024) then Limit := 1024;
+    if (Limit <= 0) or (Limit > MAX_BYTES) then Limit := MAX_BYTES;
     size := Length(Buf);
     if size > Limit then size := Limit;
 
