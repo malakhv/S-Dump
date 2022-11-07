@@ -36,7 +36,7 @@ program sdump;
 {$h+}
 
 uses
-    SysUtils, Dump, AppMsg, Mikhan.Util.AppArgs, Mikhan.Util.AppVersion, Mikhan.Util.StrUtils;
+    SysUtils, Dump, ProgMsg, Mikhan.Util.AppArgs, Mikhan.Util.AppVersion, Mikhan.Util.StrUtils;
 
 const
 

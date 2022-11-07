@@ -52,7 +52,7 @@ function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
 
 implementation
 
-uses AppMsg;
+uses ProgMsg;
 
 { Some stuff to print data }
 const 

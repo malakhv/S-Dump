@@ -6,4 +6,4 @@
 
 del /q build\
 
-fpc.bat ./src/App.pas -FEbuild -Fu./src/app -Fu./src/util -osdump.exe
+fpc.bat ./src/Program.pas -FEbuild -Fu./src/app -Fu./src/util -osdump.exe
