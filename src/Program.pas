@@ -78,24 +78,25 @@ const
     { Program command: any actions for testing. }
     CMD_TEST = 'test';
 
+{ Program command line arguments }
+ var
+
+    OptLimit: Integer;      // See Limit program option
+    OptOffset: Integer;     // See Offset program option
+    OptFormat: TOutFormat;  // See Char program option
+
 { Global Scope }
 var
     AppVer: TSemVer;        // Program version
     AppArgs: TAppArgs;      // Program command line arguments
 
     InputFile: TFileName;   // Input file path
-    OutputFile: TFileName;  // Outpot file path
 
     I: Integer;
     Arg: TArgument;
     Data: Array of Byte;
     Tmp: String;
     WasRead: Integer;
-
-    OptLimit: Integer;      // See Limit program option
-    OptOffset: Integer;     // See Offset program option
-    OptFormat: TOutFormat;   // See Char program option
-
 
 const
     DEF_INDENT = '  ';
