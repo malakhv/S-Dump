@@ -4,6 +4,7 @@
 :: Author: Mikhail.Malakhov
 ::
 
-del /q build\
+rmdir /Q /S build
+mkdir build
 
 fpc ./src/Program.pas -FEbuild -Fu./src/app -Fu./src/util -osdump.exe
