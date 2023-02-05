@@ -72,6 +72,18 @@ const
     { Program option: Represents all data as a char array, long format. }
     OPT_CHAR_LONG = '--char';
 
+    {
+        Program option: Additionally print data as a text, short format. This option
+        excludes '-c'.
+    }
+    OPT_TEXT_SHORT = '-t';
+
+    {
+        Program option: Additionally print data as a text, long format. This option
+        excludes '--char'.
+    }
+    OPT_TEXT_LONG = '--text';
+
 { Program commands }
 const
 
@@ -184,6 +196,10 @@ begin
         OptFormat := ofChar
     else
         OptFormat := ofHex;
+
+    // Program argument: Text (additionally print data as a text)
+    if AppArgs.Has(OPT_TEXT_SHORT, OPT_TEXT_LONG) then
+        OptFormat := ofHexAndText;
 
     // Program argument: Input File
     // (first command line argument without value)

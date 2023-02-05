@@ -32,12 +32,12 @@ uses SysUtils;
 const
 
     { The maximum bytes to processing. }
-    MAX_BYTES = 2048;
+    MAX_BYTES = 4096;
 
 type
 
     { The formats of output, hex or char. }
-    TOutFormat = (ofHex, ofChar);
+    TOutFormat = (ofHex, ofChar, ofHexAndText);
 
 { Prints raw data. }
 procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer); overload;
@@ -75,12 +75,22 @@ begin
     WriteLn(HEADER_SEP);
 end;
 
-procedure PrintChar(Value: Integer);
+function MakeChar(Value: Integer): String;
 begin
     if Value >= 20 then
+        Result := Char(Value) + Char($0)
+    else
+        //Result := IntToHex(Value, 2);
+        Result := '  ';
+end;
+
+procedure PrintChar(Value: Integer);
+begin
+    Write(MakeChar(Value));
+    {if Value >= 20 then
         Write(Char(Value), Char($0))
     else
-        Write(IntToHex(Value, 2));
+        Write(IntToHex(Value, 2)); }
 end;
 
 procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer);
@@ -92,13 +102,16 @@ procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer; Format: T
 var 
     i, col, off, skip: Integer;
     val: Byte;
+    text: String;
 
     procedure NewRow();
     begin
+        if Format = ofHexAndText then Write('    ', text);
         Writeln('');
         off := off + COL_LIMIT + 1;
         Write(IntToHex(off, 8), COL_SEP);
         col := COL_LIMIT;
+        text := '';
     end;
 
 begin
@@ -108,6 +121,7 @@ begin
     off := (Offset div 16) + (COL_LIMIT * (Offset div 16));
     skip := (Offset mod 16);
     if Limit <= 0 then Limit := MaxInt;
+    text := '';
     Write(IntToHex(off, 8), COL_SEP);
     for i := Low(Source) to High(Source) do
     begin
@@ -123,16 +137,25 @@ begin
         end;
 
         val := Source[i];
-        if (Format = ofHex) then
-            Write(IntToHex(val, 2))
-        else
+        if (Format = ofHex) or (Format = ofHexAndText) then
+        begin
+            Write(IntToHex(val, 2));
+            text := text + MakeChar(val);
+        end else
             PrintChar(val);
         Write(' ');
         Dec(Limit);
         if Limit <= 0 then break;
     end;
-    Writeln('');
 
+    // Process last row
+    if (Format = ofHexAndText) and (text <> '') then
+    begin
+        for i := 0 to col do Write('   ');
+        Write('    ', text);
+    end;
+
+    Writeln('');
 end;
 
 function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
@@ -148,7 +171,7 @@ begin
     end;
     // Check offset
     if Offset <= 0 then Offset := 0;
-    // Check limit. Right now 1024 bytes max
+    // Check limit. Right now 4096 bytes max
     if (Limit <= 0) or (Limit > MAX_BYTES) then Limit := MAX_BYTES;
     size := Length(Buf);
     if size > Limit then size := Limit;

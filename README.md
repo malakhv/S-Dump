@@ -12,6 +12,7 @@ Follow you could see main program command line argument and options, to see all 
 * `-s VALUE` or `--offset VALUE` -  An offset from file beginning to process.
 * `-l VALUE` or `--limit` -  A limit of bytes processing.
 * `-c` or `--char` - Represents all data as a char array.
+* `-t` or `--text` -  Additionally print data as a text. This option excludes `-c` (or `--char`).
 
 You could see output example below (command `sdump test.txt -s 27 -l 100`):
 
