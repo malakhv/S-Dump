@@ -40,10 +40,10 @@ type
     TOutFormat = (ofHex, ofChar, ofHexAndText);
 
 { Prints raw data. }
-procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer); overload;
+procedure Dump(const Source: Array of Byte; Offset: Integer; Limit: Integer); overload;
 
 { Prints raw data. }
-procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer;
+procedure Dump(const Source: Array of Byte; Offset: Integer; Limit: Integer;
     Format: TOutFormat); overload;
 
 { Load raw data from file to Buf array. }
@@ -93,12 +93,12 @@ begin
         Write(IntToHex(Value, 2)); }
 end;
 
-procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer);
+procedure Dump(const Source: Array of Byte; Offset: Integer; Limit: Integer);
 begin
     Dump(Source, OffSet, Limit, ofHex);
 end;
 
-procedure Dump(Source: Array of Byte; Offset: Integer; Limit: Integer; Format: TOutFormat);
+procedure Dump(const Source: Array of Byte; Offset: Integer; Limit: Integer; Format: TOutFormat);
 var 
     i, col, off, skip: Integer;
     val: Byte;
@@ -160,24 +160,26 @@ end;
 
 function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
     var Buf: array of byte): Integer;
+
 var size, fsize: Integer;
     f: File;
+
 begin
     Result := 0;
+
     // Check file
     if not FileExists(AFile) then
     begin
         WriteLn(MSG_INPUT_NOT_FOUND); Exit;
     end;
-    // Check offset
+
+    // Check offset and limit
     if Offset <= 0 then Offset := 0;
-    // Check limit. Right now 4096 bytes max
     if (Limit <= 0) or (Limit > MAX_BYTES) then Limit := MAX_BYTES;
     size := Length(Buf);
     if size > Limit then size := Limit;
 
-    // Open inpurt file read and setting up size of read chunk
-    // to 1 byte
+    // Read data
     AssignFile(f, AFile);
     Reset(f, 1);
     fsize := FileSize(f);
