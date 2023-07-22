@@ -1,45 +1,45 @@
-{-----------------------------------------------------------------}
-{                                                                 }
-{                  Pascal Utils Library (PUL)                     }
-{                                                                 }
-{  Copyright (C) 2022 Mikhail Malakhov <malakhv@gmail.com>        }
-{                                                                 }
-{  Licensed under the Apache License, Version 2.0 (the "License") }
-{  You may not use this file except in compliance with the        }
-{  License. You may obtain a copy of the License at               }
-{                                                                 }
-{     http://www.apache.org/licenses/LICENSE-2.0                  }
-{                                                                 }
-{  Unless required by applicable law or agreed to in writing,     }
-{  software distributed under the License is distributed on an    }
-{  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,   }
-{  either express or implied.                                     }
-{                                                                 }
-{  See the License for the specific language governing            }
-{  permissions and limitations under the License.                 }
-{                                                                 }
-{-----------------------------------------------------------------}
+{--------------------------------------------------------------------}
+{                                                                    }
+{                   Pascal Utils Library (PUL)                       }
+{                                                                    }
+{  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>      }
+{                                                                    }
+{  Licensed under the Apache License, Version 2.0 (the "License").   }
+{  You may not use this file except in compliance with the License.  }
+{  You may obtain a copy of the License at                           }
+{                                                                    }
+{     http://www.apache.org/licenses/LICENSE-2.0                     }
+{                                                                    }
+{  Unless required by applicable law or agreed to in writing,        }
+{  software distributed under the License is distributed on an       }
+{  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,      }
+{  either express or implied.                                        }
+{                                                                    }
+{  See the License for the specific language governing permissions   }
+{  and limitations under the License.                                }
+{                                                                    }
+{--------------------------------------------------------------------}
 
-{-----------------------------------------------------------------}
-{ The Unit contains types, methods and classes to working with    }
-{ program command line (input) arguments.                         }
-{                                                                 }
-{ Package: Mikhan.Util                                            }
-{ Types: TAppParams                                               }
-{ Dependencies: Mikhan.Util.StrUtils                              }
-{                                                                 }
-{ Created: 17.08.2022                                             }
-{ Author: Mikhail.Malakhov                                        }
-{-----------------------------------------------------------------}
+{--------------------------------------------------------------------}
+{ The Unit contains types, methods and classes to working with       }
+{ program command line (input) arguments.                            }
+{                                                                    }
+{ Package: Mikhan.Util                                               }
+{ Types: TAppParams                                                  }
+{ Dependencies: Mikhan.Util.StrUtils                                 }
+{                                                                    }
+{ Created: 17.08.2022                                                }
+{ Author: Mikhail.Malakhov                                           }
+{--------------------------------------------------------------------}
 
-{-----------------------------------------------------------------}
-{ There are three types of program command line arguments:        }
-{   - simple option or flag (short or long format) without any    }
-{     data, for example: -l, --help                               }
-{   - option (short or long format) with value (key-value pair),  }
-{     for example: -t "Text", --file ./file1.txt                  }
-{   - program argument or command, for example: clone, status     }
-{-----------------------------------------------------------------}
+{--------------------------------------------------------------------}
+{ There are three types of program command line arguments:           }
+{   - simple option or flag (short or long format) without any       }
+{     data, for example: -l, --help                                  }
+{   - option (short or long format) with value (key-value pair),     }
+{     for example: -t "Text", --file ./file1.txt                     }
+{   - program argument or command, for example: clone, status        }
+{--------------------------------------------------------------------}
 
 unit Mikhan.Util.AppArgs;
 
