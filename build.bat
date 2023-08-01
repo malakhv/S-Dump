@@ -7,4 +7,10 @@
 rmdir /Q /S build
 mkdir build
 
-fpc ./src/Program.pas -FEbuild -Fu./src/app -Fu./src/util -osdump.exe
+SET PASCAL_KIT="./../PascalKit/src/util"
+
+fpc.bat ./src/Program.pas -FEbuild ^
+    -Fu./src/app ^
+    -Fu./src/util ^
+    -Fu%PASCAL_KIT% ^
+    -osacd.exe

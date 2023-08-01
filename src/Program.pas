@@ -143,8 +143,8 @@ begin
 
     // Parse input arguments
     AppArgs := TAppArgs.Create();
-    AppArgs.ParseArgs();
-    if DEBUG then AppArgs.PrintAll();
+    AppArgs.Parse();
+    if DEBUG then AppArgs.Print();
 
     // Any actios for testing, if we have it, we'll ignore other
     if AppArgs.Has(CMD_TEST) then
@@ -154,7 +154,7 @@ begin
         PrintVersion();
         // Print program command line args
         WriteLn('Program args:');
-        AppArgs.PrintAll();
+        AppArgs.Print();
         // TODO Any test stuff
         Exit;
     end;
