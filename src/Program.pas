@@ -1,6 +1,6 @@
 {--------------------------------------------------------------------}
 {                                                                    }
-{                   Pascal Utils Library (PUL)                       }
+{                           S-Dump project                           }
 {                                                                    }
 {  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>      }
 {                                                                    }
@@ -22,8 +22,8 @@
 
 {--------------------------------------------------------------------}
 { Small program to see and save to external file a dump (like in hex }
-{ editors) of any file. It useful to investigate file formats and    }
-{ reverse engineering.                                               }
+{ editors) of any file. It can be useful to investigate file formats }
+{ and reverse engineering.                                           }
 {                                                                    }
 { Created: 03.11.2022                                                }
 { Author: Mikhail.Malakhov                                           }
@@ -36,8 +36,8 @@ program sdump;
 {$h+}
 
 uses
-    SysUtils, Dump, ProgMsg, Mikhan.Util.AppArgs, Mikhan.Util.AppVersion,
-    Mikhan.Util.StrUtils;
+    SysUtils, Dump, ProgMsg, Mikhan.Util.AppArgs,
+    Mikhan.Util.AppVersion, Mikhan.Util.StrUtils;
 
 const
 
@@ -63,26 +63,26 @@ const
     { Program option: A limit of bytes processing, long format. }
     OPT_LIMIT_LONG = '--limit';
 
-    { Program option: An offset from file beginning to process, short format. }
+    { Program option: An offset from file beginning to process,
+        short format. }
     OPT_OFFSET_SHORT = '-s';
-    { Program option: An offset from file beginning to process, long format. }
+    { Program option: An offset from file beginning to process,
+        long format. }
     OPT_OFFSET_LONG = '--offset';
 
-    { Program option: Represents all data as a char array, short format. }
+    { Program option: Represents all data as a char array,
+        short format. }
     OPT_CHAR_SHORT = '-c';
-    { Program option: Represents all data as a char array, long format. }
+    { Program option: Represents all data as a char array,
+        long format. }
     OPT_CHAR_LONG = '--char';
 
-    {
-        Program option: Additionally print data as a text, short format. This option
-        excludes '-c'.
-    }
+    { Program option: Additionally print data as a text, short format.
+        This option excludes '-c'/'--char'. }
     OPT_TEXT_SHORT = '-t';
 
-    {
-        Program option: Additionally print data as a text, long format. This option
-        excludes '--char'.
-    }
+    { Program option: Additionally print data as a text, long format.
+        This option excludes '-c'/'--char'. }
     OPT_TEXT_LONG = '--text';
 
 { Program commands }
@@ -132,7 +132,6 @@ begin
     WriteLn(DEF_INDENT, ' FILE_NAME                     - An input file to process.');
     WriteLn(DEF_INDENT, ' -s VALUE or --offset VALUE    - An offset from file beginning.');
     WriteLn(DEF_INDENT, ' -l VALUE or --limit           - A limit of bytes processing.');
-    WriteLn(DEF_INDENT, ' -c or --char                  - Represents all data as a char array.');
     WriteLn(DEF_INDENT, ' -v or --version               - The program version.');
     WriteLn();
 end;
