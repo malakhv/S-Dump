@@ -20,4 +20,4 @@ fpc.bat ./src/Program.pas -FEbuild ^
     -Fu./src/app ^
     -Fu./src/util ^
     -Fu%PASCAL_KIT% ^
-    -osacd.exe
+    -osdump.exe
