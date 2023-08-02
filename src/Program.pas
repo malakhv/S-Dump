@@ -32,8 +32,9 @@
 program sdump;
 
 // Compiler options
-{$mode delphi}
-{$h+}
+{$MODE DELPHI}
+{$APPTYPE CONSOLE}
+{$H+}
 
 uses
     SysUtils, Dump, ProgMsg, Mikhan.Util.AppArgs,
@@ -209,6 +210,7 @@ begin
         Arg := AppArgs[I];
         if not Arg.IsArgument() then Continue;
         InputFile := TFileName(Arg.Key);
+        break;
     end;
     if DEBUG then WriteLn('Input: ', InputFile);
     if Mikhan.Util.StrUtils.IsEmpty(InputFile) then
