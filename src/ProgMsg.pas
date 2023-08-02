@@ -1,6 +1,6 @@
 {--------------------------------------------------------------------}
 {                                                                    }
-{                   Pascal Utils Library (PUL)                       }
+{                           S-Dump project                           }
 {                                                                    }
 {  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>      }
 {                                                                    }
@@ -20,6 +20,13 @@
 {                                                                    }
 {--------------------------------------------------------------------}
 
+{--------------------------------------------------------------------}
+{ The Unit contains program messages                                 }
+{                                                                    }
+{ Created: 03.11.2022                                                }
+{ Author: Mikhail.Malakhov                                           }
+{--------------------------------------------------------------------}
+
 unit ProgMsg;
 
 {$mode delphi}
@@ -36,6 +43,25 @@ const
     { Program message: Input file not found. }
     MSG_INPUT_NOT_FOUND = 'The source file not found...';
 
+{
+  Prints program help message.
+}
+procedure PrintHelp(ProgName: String);
+
 implementation
+
+const
+    DEF_INDENT = '  ';
+
+procedure PrintHelp(ProgName: String);
+begin
+    WriteLn(ProgName, ' command line options:');
+    WriteLn(DEF_INDENT, ' FILE_NAME               - An input file to process.');
+    WriteLn(DEF_INDENT, ' -s (--offset) VALUE     - An offset from file beginning.');
+    WriteLn(DEF_INDENT, ' -l (--limit) VALUE      - A limit of bytes processing.');
+    WriteLn(DEF_INDENT, ' -v (--version)          - The program version.');
+    WriteLn(DEF_INDENT, ' -h (--help)             - Display this information.');
+    WriteLn();
+end;
 
 end.

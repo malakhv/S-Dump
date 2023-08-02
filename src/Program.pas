@@ -111,9 +111,6 @@ var
     Tmp: String;
     WasRead: Integer;
 
-const
-    DEF_INDENT = '  ';
-
 { Prints program version. }
 procedure PrintVersion();
 begin
@@ -122,18 +119,6 @@ begin
     WriteLn(PROG_NAME);
     WriteLn(AppVer.ToString());
     WriteLn('Copyright: ', PROG_AUTHOR);
-end;
-
-{ Prints program help. }
-procedure PrintHelp();
-begin
-    WriteLn(PROG_NAME, ' command line options:');
-    WriteLn(DEF_INDENT, ' -h or --help                  - Display this information.');
-    WriteLn(DEF_INDENT, ' FILE_NAME                     - An input file to process.');
-    WriteLn(DEF_INDENT, ' -s VALUE or --offset VALUE    - An offset from file beginning.');
-    WriteLn(DEF_INDENT, ' -l VALUE or --limit           - A limit of bytes processing.');
-    WriteLn(DEF_INDENT, ' -v or --version               - The program version.');
-    WriteLn();
 end;
 
 //
@@ -168,7 +153,7 @@ begin
     // Program Help
     if AppArgs.HasHelp() then
     begin
-        PrintHelp(); Exit;
+        PrintHelp(PROG_NAME); Exit;
     end;
 
     // Program argument: Limit
