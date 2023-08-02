@@ -97,6 +97,7 @@ const
     OptLimit: Integer;      // See Limit program option
     OptOffset: Integer;     // See Offset program option
     OptFormat: TOutFormat;  // See Char program option
+    OptVerbose: Boolean;    // See Verbose program option
 
 { Global Scope }
 var
@@ -112,9 +113,9 @@ var
     WasRead: Integer;
 
 { Prints program version. }
-procedure PrintVersion();
+procedure PrintVersion(Debug: Boolean);
 begin
-    AppVer := TSemVer.Create(DEBUG);
+    AppVer := TSemVer.Create(Debug);
     AppVer.LoadFromFile();
     WriteLn(PROG_NAME);
     WriteLn(AppVer.ToString());
@@ -129,14 +130,15 @@ begin
     // Parse input arguments
     AppArgs := TAppArgs.Create();
     AppArgs.Parse();
-    if DEBUG then AppArgs.Print();
+    OptVerbose := AppArgs.HasVerbose() or DEBUG;
+    if OptVerbose then AppArgs.Print();
 
     // Any actios for testing, if we have it, we'll ignore other
     if AppArgs.Has(CMD_TEST) then
     begin
         // Print program version
         WriteLn('Program version:');
-        PrintVersion();
+        PrintVersion(DEBUG);
         // Print program command line args
         WriteLn('Program args:');
         AppArgs.Print();
@@ -147,7 +149,7 @@ begin
     // Program Version
     if AppArgs.HasVersion() then
     begin
-        PrintVersion(); Exit;
+        PrintVersion(DEBUG); Exit;
     end;
 
     // Program Help
@@ -196,7 +198,7 @@ begin
         InputFile := TFileName(Arg.Key);
         break;
     end;
-    if DEBUG then WriteLn('Input: ', InputFile);
+    if OptVerbose then WriteLn('Input: ', InputFile);
     if Mikhan.Util.StrUtils.IsEmpty(InputFile) then
     begin
         WriteLn(MSG_NO_INPUT); Exit;

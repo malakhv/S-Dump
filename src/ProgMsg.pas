@@ -61,6 +61,7 @@ begin
     WriteLn(DEF_INDENT, ' -l (--limit) VALUE      - A limit of bytes processing.');
     WriteLn(DEF_INDENT, ' -v (--version)          - The program version.');
     WriteLn(DEF_INDENT, ' -h (--help)             - Display this information.');
+    WriteLn(DEF_INDENT, ' --verbose               - Turning on all debug messages.');
     WriteLn();
 end;
 
