@@ -2,7 +2,7 @@
 
 S-Dump (Small Dump) is a small program to see and save to external file a dump (like in hex editors) of any file. It useful to investigate file formats and reverse engineering.
 
-## Programm options
+## Program options
 
 Follow you could see main program command line argument and options, to see all available features, please use `-h` option.
 
@@ -11,8 +11,6 @@ Follow you could see main program command line argument and options, to see all 
 * `-o FILE_NAME` or `--out FILE_NAME` - A file to store result.
 * `-s VALUE` or `--offset VALUE` -  An offset from file beginning to process.
 * `-l VALUE` or `--limit` -  A limit of bytes processing.
-* `-c` or `--char` - Represents all data as a char array.
-* `-t` or `--text` -  Additionally print data as a text. This option excludes `-c` (or `--char`).
 
 You could see output example below (command `sdump test.txt -s 27 -l 100`):
 
