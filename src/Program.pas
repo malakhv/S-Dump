@@ -43,10 +43,10 @@ uses
 const
 
     { The name of this program. }
-    APP_NAME = 'S-Dump';
+    PROG_NAME = 'S-Dump';
 
     { The author of this program. }
-    APP_AUTHOR = 'Mikhail.Malakhov';
+    PROG_AUTHOR = 'Mikhail.Malakhov';
 
     { The common debug flag. }
     DEBUG = False;
@@ -94,7 +94,6 @@ const
 
 { Program command line arguments }
  var
-
     OptLimit: Integer;      // See Limit program option
     OptOffset: Integer;     // See Offset program option
     OptFormat: TOutFormat;  // See Char program option
@@ -120,15 +119,15 @@ procedure PrintVersion();
 begin
     AppVer := TSemVer.Create(DEBUG);
     AppVer.LoadFromFile();
-    WriteLn(APP_NAME);
+    WriteLn(PROG_NAME);
     WriteLn(AppVer.ToString());
-    WriteLn('Copyright: ', APP_AUTHOR);
+    WriteLn('Copyright: ', PROG_AUTHOR);
 end;
 
 { Prints program help. }
 procedure PrintHelp();
 begin
-    WriteLn(APP_NAME, ' command line options:');
+    WriteLn(PROG_NAME, ' command line options:');
     WriteLn(DEF_INDENT, ' -h or --help                  - Display this information.');
     WriteLn(DEF_INDENT, ' FILE_NAME                     - An input file to process.');
     WriteLn(DEF_INDENT, ' -s VALUE or --offset VALUE    - An offset from file beginning.');
