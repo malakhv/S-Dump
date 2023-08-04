@@ -35,6 +35,7 @@ program sdump;
 {$MODE DELPHI}
 {$APPTYPE CONSOLE}
 {$H+}
+{$T+}
 
 uses
     SysUtils, Dump, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
@@ -94,18 +95,16 @@ const
 
 { Program command line arguments }
  var
-    OptLimit: Integer;      // See Limit program option
-    OptOffset: Integer;     // See Offset program option
-    OptFormat: TOutFormat;  // See Char program option
-    OptVerbose: Boolean;    // See Verbose program option
+    AppArgs: TAppArgs;        // Program command line arguments/options
+    OptLimit: Integer;        // See Limit program option
+    OptOffset: Integer;       // See Offset program option
+    OptFormat: TOutFormat;    // See Char program option
+    OptVerbose: Boolean;      // See Verbose program option
+    OptInputFile: TArgument;  // See FILE_NAME program option
 
 { Global Scope }
 var
-    AppArgs: TAppArgs;      // Program command line arguments
-    InputFile: TFileName;   // Input file path
-
     I: Integer;
-    Arg: TArgument;
     Data: Array of Byte;
     Tmp: String;
     WasRead: Integer;
@@ -186,23 +185,23 @@ begin
 
     // Program argument: Input File
     // (first command line argument without value)
-    InputFile := '';
+    OptInputFile.Key := '';
     for I := 0 to AppArgs.Count - 1 do
     begin
-        Arg := AppArgs[I];
-        if not Arg.IsArgument() then Continue;
-        InputFile := TFileName(Arg.Key);
-        break;
+        if AppArgs[I].IsArgument() then
+        begin
+            OptInputFile.Key := AppArgs[I].Key; break;
+        end;
     end;
-    if OptVerbose then WriteLn('Input: ', InputFile);
-    if Mikhan.Util.StrUtils.IsEmpty(InputFile) then
+    if Mikhan.Util.StrUtils.IsEmpty(OptInputFile.Key) then
     begin
         WriteLn(MSG_NO_INPUT); Exit;
     end;
+    if OptVerbose then WriteLn('Input: ', OptInputFile.Key);
 
     // The main program action: read and print data
     SetLength(Data, MAX_BYTES);
-    WasRead := LoadData(InputFile, OptOffset, OptLimit, Data);
+    WasRead := LoadData(OptInputFile.Key, OptOffset, OptLimit, Data);
     if WasRead > 0 then
     begin
         SetLength(Data, WasRead);
