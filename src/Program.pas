@@ -37,8 +37,8 @@ program sdump;
 {$H+}
 
 uses
-    SysUtils, Dump, ProgMsg, Mikhan.Util.AppArgs,
-    Mikhan.Util.AppVersion, Mikhan.Util.StrUtils;
+    SysUtils, Dump, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
+    Mikhan.Util.StrUtils;
 
 const
 
@@ -101,9 +101,7 @@ const
 
 { Global Scope }
 var
-    AppVer: TSemVer;        // Program version
     AppArgs: TAppArgs;      // Program command line arguments
-
     InputFile: TFileName;   // Input file path
 
     I: Integer;
@@ -113,12 +111,10 @@ var
     WasRead: Integer;
 
 { Prints program version. }
-procedure PrintVersion(Debug: Boolean);
+procedure PrintVersion();
 begin
-    AppVer := TSemVer.Create(Debug);
-    AppVer.LoadFromFile();
     WriteLn(PROG_NAME);
-    WriteLn(AppVer.ToString());
+    ProgVer.PrintVersion(DEBUG);
     WriteLn('Copyright: ', PROG_AUTHOR);
 end;
 
@@ -138,7 +134,7 @@ begin
     begin
         // Print program version
         WriteLn('Program version:');
-        PrintVersion(DEBUG);
+        PrintVersion();
         // Print program command line args
         WriteLn('Program args:');
         AppArgs.Print();
@@ -149,7 +145,7 @@ begin
     // Program Version
     if AppArgs.HasVersion() then
     begin
-        PrintVersion(DEBUG); Exit;
+        PrintVersion(); Exit;
     end;
 
     // Program Help
