@@ -62,25 +62,22 @@ end;
 
 procedure Dump(const Source: Array of Byte; Offset: Integer;
     Limit: Integer; Format: TOutFormat);
-const COL_LIMIT = $F;
-
-var 
-    col, off, skip: Integer;
+const ADDRESS_SPACE = $F;
 
     procedure Header();
     var i: Integer;
     begin
         Write(EMPTY:10);
-        for i := 0 to COL_LIMIT do
+        for i := 0 to ADDRESS_SPACE do
             Write(IntToHex(i, 2), CHAR_SPACE);
         WriteLn();
         WriteLn(RepeatString('-', 57));
     end;
 
-    procedure NewRow();
+    procedure NewRow(Address: Integer);
     begin
         WriteLn();
-        Write(IntToHex(off, 8), CHAR_VERT_SLASH, CHAR_SPACE);
+        Write(IntToHex(Address, 8), CHAR_VERT_SLASH, CHAR_SPACE);
     end;
 
     function MakeSymbol(Value: Integer): String;
@@ -98,37 +95,40 @@ var
     end;
 
 var
-    val: Byte;
-    i: Integer;
+    COL, OFF, SKIP: Integer;
+
+var
+    i: Integer; val: Byte;
 
 begin
     Header();
 
     // Calc initial parameters
-    col := COL_LIMIT;
-    off := (Offset div 16) + (COL_LIMIT * (Offset div 16));
-    skip := (Offset mod 16);
+    COL := ADDRESS_SPACE;
+    OFF := (Offset div 16) + (ADDRESS_SPACE * (Offset div 16));
+    SKIP := (Offset mod 16);
     if Limit <= 0 then Limit := MaxInt;
 
     // Start printing
-    NewRow();
+    NewRow(OFF);
     for i := Low(Source) to High(Source) do
     begin
 
         // Should we go to a new row?
-        if col < 0 then
+        if COL < 0 then
         begin
-            off := off + COL_LIMIT + 1;
-            NewRow();
-            col := COL_LIMIT;
+            OFF := OFF + ADDRESS_SPACE + 1;
+            NewRow(OFF);
+            COL := ADDRESS_SPACE;
         end;
-        Dec(col);
+        Dec(COL);
 
         // Need to skip?
-        while skip > 0 do
+        while SKIP > 0 do
         begin
             Write(EMPTY:3);
-            Dec(skip); Dec(col);
+            Dec(SKIP);
+            Dec(COL);
         end;
 
         // Print value
