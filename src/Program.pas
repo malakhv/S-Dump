@@ -239,6 +239,8 @@ begin
     begin
         SetLength(Data, WasRead);
         WriteLn();
+        //TODO May be need to create program option for this:
+        //WriteLn(OptInputFile.Key, ':');
         Mikhan.Util.AppLogs.TAppLogs.Dump(Data, OptOffset, 0, OptFormat);
     end;
 
