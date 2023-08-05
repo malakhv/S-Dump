@@ -38,8 +38,8 @@ program sdump;
 {$T+}
 
 uses
-    SysUtils, Dump, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
-    Mikhan.Util.StrUtils;
+    SysUtils, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
+    Mikhan.Util.StrUtils, Mikhan.Util.AppLogs;
 
 const
 
@@ -51,6 +51,11 @@ const
 
     { The common debug flag. }
     DEBUG = False;
+
+const
+
+    { The maximum bytes to processing. }
+    MAX_BYTES = 4096;
 
 { Program command line arguments }
 const
@@ -95,12 +100,12 @@ const
 
 { Program command line arguments }
  var
-    AppArgs: TAppArgs;        // Program command line arguments/options
-    OptLimit: Integer;        // See Limit program option
-    OptOffset: Integer;       // See Offset program option
-    OptFormat: TOutFormat;    // See Char program option
-    OptVerbose: Boolean;      // See Verbose program option
-    OptInputFile: TArgument;  // See FILE_NAME program option
+    AppArgs: TAppArgs;          // Program command line arguments/options
+    OptLimit: Integer;          // See Limit program option
+    OptOffset: Integer;         // See Offset program option
+    OptFormat: TDumpOutFormat;  // See Char program option
+    OptVerbose: Boolean;        // See Verbose program option
+    OptInputFile: TArgument;    // See FILE_NAME program option
 
 { Global Scope }
 var
@@ -108,6 +113,38 @@ var
     Data: Array of Byte;
     Tmp: String;
     WasRead: Integer;
+
+{ Loads raw data from file. }
+function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
+    var Buf: array of byte): Integer;
+var size, fsize: Integer; f: File;
+begin
+    Result := 0;
+
+    // Check file
+    if not FileExists(AFile) then
+    begin
+        WriteLn(MSG_INPUT_NOT_FOUND); Exit;
+    end;
+
+    // Check offset and limit
+    if Offset <= 0 then Offset := 0;
+    if (Limit <= 0) or (Limit > MAX_BYTES) then Limit := MAX_BYTES;
+    size := Length(Buf);
+    if size > Limit then size := Limit;
+
+    // Read data
+    AssignFile(f, AFile);
+    Reset(f, 1);
+    fsize := FileSize(f);
+    if size > fsize then size := fsize;
+    try
+        Seek(f, Offset);
+        BlockRead(f, Buf, size, Result);
+    finally
+        CloseFile(f);
+    end;
+end;
 
 { Prints program version. }
 procedure PrintVersion();
@@ -175,13 +212,9 @@ begin
 
     // Program argument: Char (outpit format, Hex (by default) or Char)
     if AppArgs.Has(OPT_CHAR_SHORT, OPT_CHAR_LONG) then
-        OptFormat := ofChar
+        OptFormat := dfChar
     else
-        OptFormat := ofHex;
-
-    // Program argument: Text (additionally print data as a text)
-    if AppArgs.Has(OPT_TEXT_SHORT, OPT_TEXT_LONG) then
-        OptFormat := ofHexAndText;
+        OptFormat := dfHex; // By default
 
     // Program argument: Input File
     // (first command line argument without value)
@@ -206,7 +239,7 @@ begin
     begin
         SetLength(Data, WasRead);
         WriteLn();
-        Dump.Dump(Data, OptOffset, 0, OptFormat);
+        Mikhan.Util.AppLogs.TAppLogs.Dump(Data, OptOffset, 0, OptFormat);
     end;
 
 end.
