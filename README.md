@@ -6,11 +6,12 @@ S-Dump (Small Dump) is a small program to see and save to external file a dump (
 
 Follow you could see main program command line argument and options, to see all available features, please use `-h` option.
 
-* `-h` or `--help` - Prints this program help.
-* `FILE_NAME` - A file to process.
-* `-o FILE_NAME` or `--out FILE_NAME` - A file to store result.
-* `-s VALUE` or `--offset VALUE` -  An offset from file beginning to process.
-* `-l VALUE` or `--limit` -  A limit of bytes processing.
+* `FILE_NAME` - An input file to process.
+* `-s (--offset) VALUE` - An offset from file beginning.
+* `-l (--limit) VALUE` - A limit of bytes processing.
+* `-v (--version)` - The program version.
+* `-h (--help)` - Display this information.
+* `--verbose` - Turning on all debug messages.
 
 You could see output example below (command `sdump test.txt -s 27 -l 100`):
 
