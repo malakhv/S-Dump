@@ -44,10 +44,10 @@ const
     PROG_VERSION_MAJOR = 0;
     
     { The version component: Minor. }
-    PROG_VERSION_MINOR = 1;
+    PROG_VERSION_MINOR = 2;
     
     { The version component: Patch. }
-    PROG_VERSION_PATCH = 0;
+    PROG_VERSION_PATCH = 1;
 
 {
   Prints information about program version.
@@ -61,7 +61,8 @@ uses Mikhan.Util.AppVersion;
 procedure PrintVersion(Debug: Boolean);
 var AppVer: TSemVer;
 begin
-    AppVer := TSemVer.Create(Debug);
+    AppVer := TSemVer.Create(Debug, PROG_VERSION_MAJOR,
+        PROG_VERSION_MINOR, PROG_VERSION_PATCH);
     WriteLn(AppVer.ToString());
 end;
 
