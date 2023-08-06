@@ -1,6 +1,6 @@
 {--------------------------------------------------------------------}
 {                                                                    }
-{                           S-Dump project                           }
+{                          S-Dump project                            }
 {                                                                    }
 {  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>      }
 {                                                                    }

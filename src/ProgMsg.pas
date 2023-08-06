@@ -1,6 +1,6 @@
 {--------------------------------------------------------------------}
 {                                                                    }
-{                           S-Dump project                           }
+{                          S-Dump project                            }
 {                                                                    }
 {  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>      }
 {                                                                    }
@@ -21,7 +21,7 @@
 {--------------------------------------------------------------------}
 
 {--------------------------------------------------------------------}
-{ The Unit contains program messages                                 }
+{ The Unit contains program messages.                                }
 {                                                                    }
 { Created: 03.11.2022                                                }
 { Author: Mikhail.Malakhov                                           }
