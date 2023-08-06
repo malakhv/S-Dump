@@ -26,3 +26,23 @@ You could see output example below (command `sdump test.txt -s 27 -l 100`):
 00000060| 66 75 6C 20 74 6F 20 69 6E 76 65 73 74 69 67 61
 00000070| 74 65 20 66 69 6C 65 20 66 6F 72 6D 61 74 73
 ```
+
+## License
+
+```Text
+Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>
+
+Licensed under the Apache License, Version 2.0 (the "License").
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied.
+
+See the License for the specific language governing permissions
+and limitations under the License.
+```
