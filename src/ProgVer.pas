@@ -41,13 +41,13 @@ interface
 const
 
     { The version component: Major. }
-    PROG_VERSION_MAJOR = 0;
+    PROG_VERSION_MAJOR = 1;
     
     { The version component: Minor. }
-    PROG_VERSION_MINOR = 2;
+    PROG_VERSION_MINOR = 0;
     
     { The version component: Patch. }
-    PROG_VERSION_PATCH = 1;
+    PROG_VERSION_PATCH = 0;
 
 {
   Prints information about program version.
