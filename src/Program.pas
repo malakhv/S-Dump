@@ -39,7 +39,7 @@ program sdump;
 
 uses
     SysUtils, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
-    Mikhan.Util.StrUtils, Mikhan.Util.AppLogs;
+    Mikhan.Util.StrUtils, Mikhan.Util.Dump;
 
 const
 
@@ -241,7 +241,7 @@ begin
         WriteLn();
         //TODO May be need to create program option for this:
         //WriteLn(OptInputFile.Key, ':');
-        Mikhan.Util.AppLogs.TAppLogs.Dump(Data, OptOffset, 0, OptFormat);
+        Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
     end;
 
 end.
