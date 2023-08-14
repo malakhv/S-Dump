@@ -38,7 +38,7 @@ program sdump;
 {$T+}
 
 uses
-    SysUtils, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
+    SysUtils, Pipes, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
     Mikhan.Util.StrUtils, Mikhan.Util.Dump;
 
 const
@@ -106,6 +106,7 @@ const
     OptFormat: TDumpOutFormat;  // See Char program option
     OptVerbose: Boolean;        // See Verbose program option
     OptInputFile: TArgument;    // See FILE_NAME program option
+    HasPipe: Boolean;           // True, if we have a pipe data
 
 { Global Scope }
 var
@@ -113,6 +114,7 @@ var
     Data: Array of Byte;
     Tmp: String;
     WasRead: Integer;
+    InPipe: TInputPipeStream;
 
 { Loads raw data from file. }
 function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
@@ -216,6 +218,10 @@ begin
     else
         OptFormat := dfHex; // By default
 
+    // Has STDIN pipe?
+    InPipe := TInputPipeStream.Create(StdInputHandle);
+    HasPipe := InPipe.NumBytesAvailable > 0;
+
     // Program argument: Input File
     // (first command line argument without value)
     OptInputFile.Key := '';
@@ -223,18 +229,25 @@ begin
     begin
         if AppArgs[I].IsArgument() then
         begin
-            OptInputFile.Key := AppArgs[I].Key; break;
+            OptInputFile.Key := AppArgs[I].Key;
+            if OptVerbose then WriteLn('Input: ', OptInputFile.Key);
+            break;
         end;
     end;
-    if Mikhan.Util.StrUtils.IsEmpty(OptInputFile.Key) then
+    if Mikhan.Util.StrUtils.IsEmpty(OptInputFile.Key) and (not HasPipe) then
     begin
         WriteLn(MSG_NO_INPUT); Exit;
     end;
-    if OptVerbose then WriteLn('Input: ', OptInputFile.Key);
 
     // The main program action: read and print data
     SetLength(Data, MAX_BYTES);
-    WasRead := LoadData(OptInputFile.Key, OptOffset, OptLimit, Data);
+    if HasPipe then
+    begin
+        WasRead := InPipe.Read(Data[0], Length(Data));
+        WriteLn(BytesToStr(Data));
+    end else begin
+        WasRead := LoadData(OptInputFile.Key, OptOffset, OptLimit, Data);
+    end;
     if WasRead > 0 then
     begin
         SetLength(Data, WasRead);
