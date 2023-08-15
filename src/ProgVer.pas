@@ -50,20 +50,20 @@ const
     PROG_VERSION_PATCH = 0;
 
 {
-  Prints information about program version.
+  Returns information about program version as a human readable string.
 }
-procedure PrintVersion(Debug: Boolean);
+function GetVersion(Debug: Boolean): String;
 
 implementation
 
 uses Mikhan.Util.AppVersion;
 
-procedure PrintVersion(Debug: Boolean);
+function GetVersion(Debug: Boolean): String;
 var AppVer: TSemVer;
 begin
     AppVer := TSemVer.Create(Debug, PROG_VERSION_MAJOR,
         PROG_VERSION_MINOR, PROG_VERSION_PATCH);
-    WriteLn(AppVer.ToString());
+    Result:= AppVer.ToString();
 end;
 
 end.

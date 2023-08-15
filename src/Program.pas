@@ -49,6 +49,9 @@ const
     { The author of this program. }
     PROG_AUTHOR = 'Mikhail.Malakhov';
 
+    { The copyright string. }
+    PROG_COPYRIGHT = 'Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>';
+
     { The common debug flag. }
     DEBUG = False;
 
@@ -152,8 +155,8 @@ end;
 procedure PrintVersion();
 begin
     WriteLn(PROG_NAME);
-    ProgVer.PrintVersion(DEBUG);
-    WriteLn('Copyright: ', PROG_AUTHOR);
+    WriteLn(ProgVer.GetVersion(DEBUG));
+    WriteLn(PROG_COPYRIGHT);
 end;
 
 //
