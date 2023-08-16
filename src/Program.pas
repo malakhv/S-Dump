@@ -38,7 +38,7 @@ program sdump;
 {$T+}
 
 uses
-    SysUtils, Pipes, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
+    SysUtils, Classes, Pipes, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
     Mikhan.Util.StrUtils, Mikhan.Util.Dump;
 
 const
@@ -74,25 +74,24 @@ const
     OPT_LIMIT_LONG = '--limit';
 
     { Program option: An offset from file beginning to process,
-        short format. }
+      short format. }
     OPT_OFFSET_SHORT = '-s';
     { Program option: An offset from file beginning to process,
-        long format. }
+      long format. }
     OPT_OFFSET_LONG = '--offset';
 
     { Program option: Represents all data as a char array,
-        short format. }
+      short format. }
     OPT_CHAR_SHORT = '-c';
     { Program option: Represents all data as a char array,
-        long format. }
+      long format. }
     OPT_CHAR_LONG = '--char';
 
-    { Program option: Additionally print data as a text, short format.
-        This option excludes '-c'/'--char'. }
+    { Program option: Use specified text as a program data source, short format.
+      This option has a higher priority than file name or pipe data. }
     OPT_TEXT_SHORT = '-t';
-
-    { Program option: Additionally print data as a text, long format.
-        This option excludes '-c'/'--char'. }
+    { Program option: Use specified text as a program data source, long format.
+      This option has a higher priority than file name or pipe data. }
     OPT_TEXT_LONG = '--text';
 
 { Program commands }
@@ -118,10 +117,11 @@ var
     Tmp: String;
     WasRead: Integer;
     InPipe: TInputPipeStream;
+    InStream: TStream;
 
 { Loads raw data from file. }
 function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
-    var Buf: array of byte): Integer;
+    var Buf: array of byte): Integer; overload;
 var size, fsize: Integer; f: File;
 begin
     Result := 0;
@@ -148,6 +148,33 @@ begin
         BlockRead(f, Buf, size, Result);
     finally
         CloseFile(f);
+    end;
+end;
+
+function LoadData(const Stream: TStream; Offset: Integer; Limit: Integer;
+    var Buf: array of byte): Integer; overload;
+var Size, StreamSize: Integer;
+begin
+    Result := 0;
+    StreamSize := Stream.Size;
+    if StreamSize <= 0 then Exit;
+
+    // Check offset and limit
+    if Offset <= 0 then Offset := 0;
+    if (Limit <= 0) or (Limit > MAX_BYTES) then Limit := MAX_BYTES;
+
+    // How many bytes we want to read?
+    Size := Length(Buf);
+    if Size > Limit then Size := Limit;
+    if Size > StreamSize then Size := StreamSize;
+
+    // Read data
+    try
+        Stream.Seek(Offset, soBeginning);
+        Result := Stream.Read(Buf, Size);
+    except
+        WriteLn(MSG_CANNOT_READ_DATA);
+        Result := 0;
     end;
 end;
 
@@ -189,8 +216,12 @@ begin
         PrintVersion(); Exit;
     end;
 
+    // Has STDIN pipe?
+    InPipe := TInputPipeStream.Create(StdInputHandle);
+    HasPipe := InPipe.NumBytesAvailable > 0;
+
     // Program Help
-    if AppArgs.HasHelp() or AppArgs.IsEmpty() then
+    if AppArgs.HasHelp() or (not HasPipe and AppArgs.IsEmpty()) then
     begin
         PrintHelp(PROG_NAME); Exit;
     end;
@@ -221,11 +252,36 @@ begin
     else
         OptFormat := dfHex; // By default
 
-    // Has STDIN pipe?
-    InPipe := TInputPipeStream.Create(StdInputHandle);
-    HasPipe := InPipe.NumBytesAvailable > 0;
+    //
+    // Select data source and print dump, the priority for data source is:
+    //  1. Pipe
+    //  2. Program argument
+    //  3. Input file
+    //
+    SetLength(Data, MAX_BYTES);
 
-    // Program argument: Input File
+    // Data source: Pipe
+    if HasPipe then
+    begin
+        //TODO Need to fix Offset!
+        WasRead := InPipe.Read(Data[0], Length(Data));
+        SetLength(Data, WasRead);
+        Mikhan.Util.Dump.Dump(Data, OptOffset, OptLimit, OptFormat);
+        Exit;
+    end;
+
+    // Data source: Program argument
+    if AppArgs.Has(OPT_TEXT_SHORT, OPT_TEXT_LONG) then
+    begin
+        Tmp := AppArgs.GetValue(OPT_TEXT_SHORT, OPT_TEXT_LONG);
+        InStream := TStringStream.CreateRaw(Tmp);
+        WasRead := LoadData(InStream, OptOffset, OptLimit, Data);
+        SetLength(Data, WasRead);
+        Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
+        Exit;
+    end;
+
+    // Data source: Input File
     // (first command line argument without value)
     OptInputFile.Key := '';
     for I := 0 to AppArgs.Count - 1 do
@@ -237,20 +293,12 @@ begin
             break;
         end;
     end;
-    if Mikhan.Util.StrUtils.IsEmpty(OptInputFile.Key) and (not HasPipe) then
+    if Mikhan.Util.StrUtils.IsEmpty(OptInputFile.Key) then
     begin
         WriteLn(MSG_NO_INPUT); Exit;
     end;
-
-    // The main program action: read and print data
-    SetLength(Data, MAX_BYTES);
-    if HasPipe then
-    begin
-        WasRead := InPipe.Read(Data[0], Length(Data));
-        WriteLn(BytesToStr(Data));
-    end else begin
-        WasRead := LoadData(OptInputFile.Key, OptOffset, OptLimit, Data);
-    end;
+    //TODO Need to use TFileStream
+    WasRead := LoadData(OptInputFile.Key, OptOffset, OptLimit, Data);
     if WasRead > 0 then
     begin
         SetLength(Data, WasRead);

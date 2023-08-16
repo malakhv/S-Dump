@@ -43,6 +43,9 @@ const
     { Program message: Input file not found. }
     MSG_INPUT_NOT_FOUND = 'The source file not found...';
 
+    { Program message: Cannot read data from data source. }
+    MSG_CANNOT_READ_DATA = 'Cannot read data from data source...';
+
 {
   Prints program help message.
 }
