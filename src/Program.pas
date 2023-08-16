@@ -190,7 +190,7 @@ begin
     end;
 
     // Program Help
-    if AppArgs.HasHelp() then
+    if AppArgs.HasHelp() or AppArgs.IsEmpty() then
     begin
         PrintHelp(PROG_NAME); Exit;
     end;
