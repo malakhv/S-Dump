@@ -62,6 +62,7 @@ begin
     WriteLn(DEF_INDENT, ' FILE_NAME               - An input file to process.');
     WriteLn(DEF_INDENT, ' -s (--offset) VALUE     - An offset from file beginning.');
     WriteLn(DEF_INDENT, ' -l (--limit) VALUE      - A limit of bytes processing.');
+    WriteLn(DEF_INDENT, ' -t (--text) "ANY TEXT"  - A text to process.');
     WriteLn(DEF_INDENT, ' -v (--version)          - The program version.');
     WriteLn(DEF_INDENT, ' -h (--help)             - Display this information.');
     WriteLn(DEF_INDENT, ' --verbose               - Turning on all debug messages.');

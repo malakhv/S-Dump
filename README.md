@@ -9,6 +9,7 @@ Follow you could see main program command line argument and options, to see all 
 * `FILE_NAME` - An input file to process.
 * `-s (--offset) VALUE` - An offset from file beginning.
 * `-l (--limit) VALUE` - A limit of bytes processing.
+* `-t (--text) "ANY TEXT"` - A text to process. This argument has a higher priority than file name or pipe data.
 * `-v (--version)` - The program version.
 * `-h (--help)` - Display this information.
 * `--verbose` - Turning on all debug messages.
