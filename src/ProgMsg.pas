@@ -60,7 +60,7 @@ procedure PrintHelp(ProgName: String);
 begin
     WriteLn(ProgName, ' command line options:');
     WriteLn(DEF_INDENT, ' FILE_NAME               - An input file to process.');
-    WriteLn(DEF_INDENT, ' -s (--offset) VALUE     - An offset from data beginning.');
+    WriteLn(DEF_INDENT, ' -s (--skip) VALUE       - An offset from data beginning.');
     WriteLn(DEF_INDENT, ' -l (--limit) VALUE      - A limit of bytes processing.');
     WriteLn(DEF_INDENT, ' -t (--text) "ANY TEXT"  - A text to process.');
     WriteLn(DEF_INDENT, ' -v (--version)          - The program version.');

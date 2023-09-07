@@ -78,7 +78,7 @@ const
     OPT_OFFSET_SHORT = '-s';
     { Program option: An offset from file beginning to process,
       long format. }
-    OPT_OFFSET_LONG = '--offset';
+    OPT_OFFSET_LONG = '--skip';
 
     { Program option: Represents all data as a char array,
       short format. }

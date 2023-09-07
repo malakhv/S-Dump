@@ -7,7 +7,7 @@ S-Dump (Small Dump) is a small program to see and save to external file a dump (
 Follow you could see main program command line argument and options, to see all available features, please use `-h` option.
 
 * `FILE_NAME` - An input file to process.
-* `-s (--offset) VALUE` - An offset from file beginning.
+* `-s (--skip) VALUE` - An offset from file beginning.
 * `-l (--limit) VALUE` - A limit of bytes processing.
 * `-t (--text) "ANY TEXT"` - A text to process. This argument has a higher priority than file name or pipe data.
 * `-v (--version)` - The program version.
