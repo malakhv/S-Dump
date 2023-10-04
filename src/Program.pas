@@ -50,7 +50,8 @@ const
     PROG_AUTHOR = 'Mikhail.Malakhov';
 
     { The copyright string. }
-    PROG_COPYRIGHT = 'Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>';
+    PROG_COPYRIGHT = 'Copyright (C) 1996-2023 Mikhail Malakhov ' +
+        '<malakhv@gmail.com>';
 
     { The common debug flag. }
     DEBUG = False;
@@ -87,11 +88,13 @@ const
       long format. }
     OPT_CHAR_LONG = '--char';
 
-    { Program option: Use specified text as a program data source, short format.
-      This option has a higher priority than file name or pipe data. }
+    { Program option: Use specified text as a program data source, short
+      format. This option has a higher priority than file name or pipe
+      data. }
     OPT_TEXT_SHORT = '-t';
-    { Program option: Use specified text as a program data source, long format.
-      This option has a higher priority than file name or pipe data. }
+    { Program option: Use specified text as a program data source, long
+      format. This option has a higher priority than file name or pipe
+      data. }
     OPT_TEXT_LONG = '--text';
 
 { Program commands }
@@ -309,3 +312,5 @@ begin
     end;
 
 end.
+
+{-------------------------------------------------------------------------}
