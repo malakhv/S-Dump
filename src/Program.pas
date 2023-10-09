@@ -122,44 +122,20 @@ var
     InPipe: TInputPipeStream;
     InStream: TStream;
 
-{ Loads raw data from file. }
-function LoadData(const AFile: TFileName; Offset: Integer; Limit: Integer;
-    var Buf: array of byte): Integer; overload;
-var size, fsize: Integer; f: File;
-begin
-    Result := 0;
-
-    // Check file
-    if not FileExists(AFile) then
-    begin
-        WriteLn(MSG_INPUT_NOT_FOUND); Exit;
-    end;
-
-    // Check offset and limit
-    if Offset <= 0 then Offset := 0;
-    if (Limit <= 0) or (Limit > MAX_BYTES) then Limit := MAX_BYTES;
-    size := Length(Buf);
-    if size > Limit then size := Limit;
-
-    // Read data
-    AssignFile(f, AFile);
-    Reset(f, 1);
-    fsize := FileSize(f);
-    if size > fsize then size := fsize;
-    try
-        Seek(f, Offset);
-        BlockRead(f, Buf, size, Result);
-    finally
-        CloseFile(f);
-    end;
-end;
-
+{
+    Loads raw data from stream.
+}
 function LoadData(const Stream: TStream; Offset: Integer; Limit: Integer;
-    var Buf: array of byte): Integer; overload;
+    var Buf: array of byte): Integer;
 var Size, StreamSize: Integer;
 begin
     Result := 0;
-    StreamSize := Stream.Size;
+
+    // Retrieve stream size, for a pipe data we have a special method
+    if Stream is TInputPipeStream then
+        StreamSize := (Stream as TInputPipeStream).NumBytesAvailable
+    else
+        StreamSize := Stream.Size;
     if StreamSize <= 0 then Exit;
 
     // Check offset and limit
@@ -171,9 +147,19 @@ begin
     if Size > Limit then Size := Limit;
     if Size > StreamSize then Size := StreamSize;
 
+    // Need to print logs?
+    if OptVerbose then
+    begin
+        Write('LoadData {');
+        Write('Offset=', Offset,', ');
+        Write('Limit=', Limit,', ');
+        Write('Size=', Size,', ');
+        WriteLn('StreamSize=', StreamSize,'}');
+    end;
+
     // Read data
     try
-        Stream.Seek(Offset, soBeginning);
+        if Offset > 0 then Stream.Seek(Offset, soBeginning);
         Result := Stream.Read(Buf, Size);
     except
         WriteLn(MSG_CANNOT_READ_DATA);
@@ -213,20 +199,16 @@ begin
         Exit;
     end;
 
+    // Program Help
+    if AppArgs.HasHelp() then
+    begin
+        PrintHelp(PROG_NAME); Exit;
+    end;
+
     // Program Version
     if AppArgs.HasVersion() then
     begin
         PrintVersion(); Exit;
-    end;
-
-    // Has STDIN pipe?
-    InPipe := TInputPipeStream.Create(StdInputHandle);
-    HasPipe := InPipe.NumBytesAvailable > 0;
-
-    // Program Help
-    if AppArgs.HasHelp() or (not HasPipe and AppArgs.IsEmpty()) then
-    begin
-        PrintHelp(PROG_NAME); Exit;
     end;
 
     // Program argument: Limit
@@ -257,25 +239,16 @@ begin
 
     //
     // Select data source and print dump, the priority for data source is:
-    //  1. Pipe
-    //  2. Program argument
+    //  1. Program argument
+    //  2. Pipe
     //  3. Input file
     //
     SetLength(Data, MAX_BYTES);
 
-    // Data source: Pipe
-    if HasPipe then
-    begin
-        //TODO Need to fix Offset!
-        WasRead := InPipe.Read(Data[0], Length(Data));
-        SetLength(Data, WasRead);
-        Mikhan.Util.Dump.Dump(Data, OptOffset, OptLimit, OptFormat);
-        Exit;
-    end;
-
     // Data source: Program argument
     if AppArgs.Has(OPT_TEXT_SHORT, OPT_TEXT_LONG) then
     begin
+        if OptVerbose then WriteLn('Data source: Program argument');
         Tmp := AppArgs.GetValue(OPT_TEXT_SHORT, OPT_TEXT_LONG);
         InStream := TStringStream.CreateRaw(Tmp);
         WasRead := LoadData(InStream, OptOffset, OptLimit, Data);
@@ -284,8 +257,19 @@ begin
         Exit;
     end;
 
-    // Data source: Input File
-    // (first command line argument without value)
+    // Data source: Pipe
+    InPipe := TInputPipeStream.Create(StdInputHandle);
+    HasPipe := InPipe.NumBytesAvailable > 0;
+    if HasPipe then
+    begin
+        if OptVerbose then WriteLn('Data source: Pipe');
+        WasRead := LoadData(InPipe, OptOffset, OptLimit, Data);
+        SetLength(Data, WasRead);
+        Mikhan.Util.Dump.Dump(Data, OptOffset, OptLimit, OptFormat);
+        Exit;
+    end;
+
+    // Data source: Input File (first command line argument without value)
     OptInputFile.Key := '';
     for I := 0 to AppArgs.Count - 1 do
     begin
@@ -300,14 +284,13 @@ begin
     begin
         WriteLn(MSG_NO_INPUT); Exit;
     end;
-    //TODO Need to use TFileStream
-    WasRead := LoadData(OptInputFile.Key, OptOffset, OptLimit, Data);
+    if OptVerbose then WriteLn('Data source: ', OptInputFile.Key);
+    InStream := TFileStream.Create(OptInputFile.Key, fmOpenRead);
+    WasRead := LoadData(InStream, OptOffset, OptLimit, Data);
     if WasRead > 0 then
     begin
         SetLength(Data, WasRead);
         WriteLn();
-        //TODO May be need to create program option for this:
-        //WriteLn(OptInputFile.Key, ':');
         Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
     end;
 
