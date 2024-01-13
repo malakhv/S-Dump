@@ -167,7 +167,9 @@ begin
     end;
 end;
 
-{ Prints program version. }
+{
+    Prints program version.
+}
 procedure PrintVersion();
 begin
     WriteLn(PROG_NAME);
