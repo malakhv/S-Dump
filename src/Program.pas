@@ -54,7 +54,7 @@ const
         '<malakhv@gmail.com>';
 
     { The common debug flag. }
-    DEBUG = True;
+    DEBUG = False;
 
 const
 
