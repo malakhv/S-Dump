@@ -30,8 +30,8 @@
 
 UNIT ProgMsg;                                                           { UNIT }
 
-{$mode delphi}
-{$h+}
+{$MODE DELPHI}
+{$H+}
 
 INTERFACE                                                          { INTERFACE }
 

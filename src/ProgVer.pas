@@ -30,8 +30,8 @@
 
 UNIT ProgVer;                                                           { UNIT }
 
-{$mode delphi}
-{$h+}
+{$MODE DELPHI}
+{$H+}
 
 INTERFACE                                                          { INTERFACE }
 
