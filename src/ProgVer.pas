@@ -1,42 +1,42 @@
-{-------------------------------------------------------------------------}
-{                                                                         }
-{                             S-Dump project                              }
-{                                                                         }
-{  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>           }
-{                                                                         }
-{  Licensed under the Apache License, Version 2.0 (the "License").        }
-{  You may not use this file except in compliance with the License.       }
-{  You may obtain a copy of the License at                                }
-{                                                                         }
-{     http://www.apache.org/licenses/LICENSE-2.0                          }
-{                                                                         }
-{  Unless required by applicable law or agreed to in writing, software    }
-{  distributed under the License is distributed on an "AS IS" BASIS,      }
-{  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or        }
-{  implied.                                                               }
-{                                                                         }
-{  See the License for the specific language governing permissions and    }
-{  limitations under the License.                                         }
-{                                                                         }
-{-------------------------------------------------------------------------}
+{------------------------------------------------------------------------------}
+{                                                                              }
+{                                S-Dump project                                }
+{                                                                              }
+{  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>                }
+{                                                                              }
+{  Licensed under the Apache License, Version 2.0 (the "License"). You may     }
+{  not use this file except in compliance with the License. You may obtain     }
+{  a copy of the License at                                                    }
+{                                                                              }
+{     http://www.apache.org/licenses/LICENSE-2.0                               }
+{                                                                              }
+{  Unless required by applicable law or agreed to in writing, software         }
+{  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT   }
+{  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.            }
+{                                                                              }
+{  See the License for the specific language governing permissions and         }
+{  limitations under the License.                                              }
+{                                                                              }
+{------------------------------------------------------------------------------}
 
-{-------------------------------------------------------------------------}
-{ The Unit contains program version information.                          }
-{                                                                         }
-{ Created: 04.08.2023                                                     }
-{ Author: Mikhail.Malakhov                                                }
-{-------------------------------------------------------------------------}
+{------------------------------------------------------------------------------}
+{ The Unit contains program version information.                               }
+{                                                                              }
+{ Dependencies: Mikhan.Util.AppVersion                                         }
+{                                                                              }
+{ Created: 04.08.2023                                                          }
+{ Author: Mikhail.Malakhov                                                     }
+{------------------------------------------------------------------------------}
 
-unit ProgVer;
+UNIT ProgVer;                                                           { UNIT }
 
 {$mode delphi}
 {$h+}
 
-interface
+INTERFACE                                                          { INTERFACE }
 
 {
-  Program version components. It uses "Semantic Versioning 2.0.0"
-  conception.
+    Program version components. It uses "Semantic Versioning 2.0.0" conception.
 }
 const
 
@@ -50,11 +50,11 @@ const
     PROG_VERSION_PATCH = 0;
 
 {
-  Returns information about program version as a human readable string.
+    Returns information about program version as a human readable string.
 }
 function GetVersion(Debug: Boolean): String;
 
-implementation
+IMPLEMENTATION                                                { IMPLEMENTATION }
 
 uses Mikhan.Util.AppVersion;
 
@@ -66,6 +66,6 @@ begin
     Result:= AppVer.ToString();
 end;
 
-end.
+END.                                                                     { END }
 
-{-------------------------------------------------------------------------}
+{------------------------------------------------------------------------------}
