@@ -54,7 +54,7 @@ const
         '<malakhv@gmail.com>';
 
     { The common debug flag. }
-    DEBUG = False;
+    DEBUG = True;
 
 const
 
@@ -63,11 +63,6 @@ const
 
 { Program command line arguments }
 const
-
-    { Program option: A file to store program output, short format. }
-    OPT_OUT_SHORT = '-o';
-    { Program option: A file to store program output, long format. }
-    OPT_OUT_LONG = '--out';
 
     { Program option: A limit of bytes processing, short format. }
     OPT_LIMIT_SHORT = '-l';
@@ -254,11 +249,13 @@ BEGIN                                                            { ENTRY POINT }
         InStream := TStringStream.CreateRaw(Tmp);
         WasRead := LoadData(InStream, OptOffset, OptLimit, Data);
         SetLength(Data, WasRead);
+        WriteLn();
         Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
         Exit;
     end;
 
     // Data source: Pipe
+    // TODO It works very strange... Need to investigate...
     InPipe := TInputPipeStream.Create(StdInputHandle);
     HasPipe := InPipe.NumBytesAvailable > 0;
     if HasPipe then
@@ -266,6 +263,7 @@ BEGIN                                                            { ENTRY POINT }
         if OptVerbose then WriteLn('Data source: Pipe');
         WasRead := LoadData(InPipe, OptOffset, OptLimit, Data);
         SetLength(Data, WasRead);
+        WriteLn();
         Mikhan.Util.Dump.Dump(Data, OptOffset, OptLimit, OptFormat);
         Exit;
     end;
