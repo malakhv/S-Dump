@@ -54,18 +54,18 @@ procedure PrintHelp(ProgName: String);
 implementation
 
 const
-    DEF_INDENT = '  ';
+    IND = '  ';
 
 procedure PrintHelp(ProgName: String);
 begin
     WriteLn(ProgName, ' command line options:');
-    WriteLn(DEF_INDENT, ' FILE_NAME               - An input file to process.');
-    WriteLn(DEF_INDENT, ' -s (--skip) VALUE       - An offset from data beginning.');
-    WriteLn(DEF_INDENT, ' -l (--limit) VALUE      - A limit of bytes processing.');
-    WriteLn(DEF_INDENT, ' -t (--text) "ANY TEXT"  - A text to process.');
-    WriteLn(DEF_INDENT, ' -v (--version)          - The program version.');
-    WriteLn(DEF_INDENT, ' -h (--help)             - Display this information.');
-    WriteLn(DEF_INDENT, ' --verbose               - Turning on all debug messages.');
+    WriteLn(IND, ' FILE_NAME               - An input file to process.');
+    WriteLn(IND, ' -s (--skip) VALUE       - An offset from data beginning.');
+    WriteLn(IND, ' -l (--limit) VALUE      - A limit of bytes processing.');
+    WriteLn(IND, ' -t (--text) "ANY TEXT"  - A text to process.');
+    WriteLn(IND, ' -v (--version)          - The program version.');
+    WriteLn(IND, ' -h (--help)             - Display this information.');
+    WriteLn(IND, ' --verbose               - Turning on all debug messages.');
     WriteLn();
 end;
 
