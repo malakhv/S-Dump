@@ -54,6 +54,8 @@ const
 }
 function GetVersion(Debug: Boolean): String;
 
+{------------------------------------------------------------------------------}
+
 IMPLEMENTATION                                                { IMPLEMENTATION }
 
 uses Mikhan.Util.AppVersion;

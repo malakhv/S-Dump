@@ -52,6 +52,8 @@ const
 }
 procedure PrintHelp(ProgName: String);
 
+{------------------------------------------------------------------------------}
+
 IMPLEMENTATION                                                { IMPLEMENTATION }
 
 const
