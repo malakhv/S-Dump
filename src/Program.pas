@@ -27,7 +27,7 @@
 { Dependencies: ProgVer, ProgMsg, Mikhan.Util.*                                }
 {                                                                              }
 { Created: 03.11.2022                                                          }
-{ Author: Mikhail.Malakhov                                                     }
+{ Authors: Mikhail.Malakhov                                                    }
 {------------------------------------------------------------------------------}
 
 PROGRAM sdump;                                                       { PROGRAM }
