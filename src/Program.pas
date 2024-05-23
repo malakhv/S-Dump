@@ -98,6 +98,8 @@ const
     { Program command: any actions for testing. }
     CMD_TEST = 'test';
 
+{------------------------------------------------------------------------------}
+
 { Program command line arguments }
  var
     AppArgs: TAppArgs;          // Program command line arguments/options
@@ -116,6 +118,8 @@ var
     WasRead: Integer;
     InPipe: TInputPipeStream;
     InStream: TStream;
+
+{------------------------------------------------------------------------------}
 
 {
     Loads raw data from stream.
