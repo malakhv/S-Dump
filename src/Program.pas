@@ -50,7 +50,7 @@ const
     PROG_AUTHOR = 'Mikhail.Malakhov';
 
     { The copyright string. }
-    PROG_COPYRIGHT = 'Copyright (C) 1996-2023 Mikhail Malakhov ' +
+    PROG_COPYRIGHT = 'Copyright (C) 1996-2025 Mikhail Malakhov ' +
         '<malakhv@gmail.com>';
 
     { The common debug flag. }
