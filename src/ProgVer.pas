@@ -47,7 +47,7 @@ const
     PROG_VERSION_MINOR = 0;
     
     { The version component: Patch. }
-    PROG_VERSION_PATCH = 1;
+    PROG_VERSION_PATCH = 2;
 
 {
     Returns information about program version as a human readable string.
