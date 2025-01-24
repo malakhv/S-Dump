@@ -1,8 +1,8 @@
 {------------------------------------------------------------------------------}
 {                                                                              }
-{                                S-Dump project                                }
+{                                S-Dump Project                                }
 {                                                                              }
-{  Copyright (C) 1996-2023 Mikhail Malakhov <malakhv@gmail.com>                }
+{  Copyright (C) 1996-2025 Mikhail Malakhov <malakhv@gmail.com>                }
 {                                                                              }
 {  Licensed under the Apache License, Version 2.0 (the "License"). You may     }
 {  not use this file except in compliance with the License. You may obtain     }
