@@ -69,18 +69,14 @@ const
     { Program option: A limit of bytes processing, long format. }
     OPT_LIMIT_LONG = '--limit';
 
-    { Program option: An offset from file beginning to process,
-      short format. }
+    { Program option: An offset from file beginning to process, short format. }
     OPT_OFFSET_SHORT = '-s';
-    { Program option: An offset from file beginning to process,
-      long format. }
+    { Program option: An offset from file beginning to process, long format. }
     OPT_OFFSET_LONG = '--skip';
 
-    { Program option: Represents all data as a char array,
-      short format. }
+    { Program option: Represents all data as a char array, short format. }
     OPT_CHAR_SHORT = '-c';
-    { Program option: Represents all data as a char array,
-      long format. }
+    { Program option: Represents all data as a char array, long format. }
     OPT_CHAR_LONG = '--char';
 
     { Program option: Use specified text as a program data source, short
@@ -91,6 +87,11 @@ const
       format. This option has a higher priority than file name or pipe
       data. }
     OPT_TEXT_LONG = '--text';
+
+    { Program option: Search something into data, short format. }
+    OPT_FIND_SHORT = '-f';
+    { Program option: Search something into data, long format. }
+    OPT_FIND_LONG = '--find';
 
 { Program commands }
 const
@@ -105,6 +106,7 @@ const
     AppArgs: TAppArgs;          // Program command line arguments/options
     OptLimit: Integer;          // See Limit program option
     OptOffset: Integer;         // See Offset program option
+    OptFind: Integer;           // See Find program option
     OptFormat: TDumpOutFormat;  // See Char program option
     OptVerbose: Boolean;        // See Verbose program option
     OptInputFile: TArgument;    // See FILE_NAME program option
@@ -164,6 +166,44 @@ begin
         WriteLn(MSG_CANNOT_READ_DATA);
         Result := 0;
     end;
+end;
+
+function FindData(const Stream: TStream; Offset: Integer;
+    Val: Integer): Integer;
+var Size, StreamSize: Integer;
+begin
+    Result := -1; // Nothing was found
+
+    // Retrieve stream size, for a pipe data we have a special method
+    if Stream is TInputPipeStream then
+        StreamSize := (Stream as TInputPipeStream).NumBytesAvailable
+    else
+        StreamSize := Stream.Size;
+    if StreamSize <= 0 then Exit;
+
+    // Check offset and limit
+    if Offset <= 0 then Offset := 0;
+
+    // Need to print logs?
+    if OptVerbose then
+    begin
+        Write('FindData {');
+        Write('Offset=', Offset,', ');
+        WriteLn('StreamSize=', StreamSize,'}');
+    end;
+
+    // Find value
+    try
+        if Offset > 0 then Stream.Seek(Offset, soBeginning);
+
+        //FIND
+
+        //Result := Stream.Read(Buf, Size);
+
+    except
+        WriteLn(MSG_CANNOT_READ_DATA); Result := -1;
+    end;
+
 end;
 
 {
@@ -233,6 +273,16 @@ BEGIN                                                            { ENTRY POINT }
             OptOffset := 0;
     end;
 
+    // Program argument: Find
+    if AppArgs.Has(OPT_FIND_SHORT, OPT_FIND_LONG) then
+    begin
+        Tmp := AppArgs.GetValue(OPT_FIND_SHORT, OPT_FIND_LONG);
+        if not Mikhan.Util.StrUtils.IsEmpty(Tmp) then
+            OptFind := StrToInt(Tmp)
+        else
+            OptFind := -1; // Search first not 0 value
+    end;
+
     // Program argument: Char (outpit format, Hex (by default) or Char)
     if AppArgs.Has(OPT_CHAR_SHORT, OPT_CHAR_LONG) then
         OptFormat := dfChar
@@ -291,6 +341,13 @@ BEGIN                                                            { ENTRY POINT }
     end;
     if OptVerbose then WriteLn('Data source: ', OptInputFile.Key);
     InStream := TFileStream.Create(OptInputFile.Key, fmOpenRead);
+
+    if AppArgs.Has(OPT_FIND_SHORT, OPT_FIND_LONG) then
+    begin
+        OptOffset := FindData(InStream, OptOffset, OptFind);
+        if OptOffset < 0 then Exit;
+    end;
+
     WasRead := LoadData(InStream, OptOffset, OptLimit, Data);
     if WasRead > 0 then
     begin
