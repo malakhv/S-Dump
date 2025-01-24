@@ -47,14 +47,14 @@ const
     { Program message: Cannot read data from data source. }
     MSG_CANNOT_READ_DATA = 'Cannot read data from data source...';
 
-{
-    Prints program help message.
-}
+{ Prints program help message. }
 procedure PrintHelp(ProgName: String);
 
 {------------------------------------------------------------------------------}
 
 IMPLEMENTATION                                                { IMPLEMENTATION }
+
+{------------------------------------------------------------------------------}
 
 const
     IND = '  ';
@@ -71,6 +71,8 @@ begin
     WriteLn(IND, ' --verbose               - Turning on all debug messages.');
     WriteLn();
 end;
+
+{------------------------------------------------------------------------------}
 
 END.                                                                     { END }
 

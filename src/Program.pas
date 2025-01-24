@@ -180,6 +180,8 @@ end;
 
 BEGIN                                                            { ENTRY POINT }
 
+{------------------------------------------------------------------------------}
+
     // Parse input arguments
     AppArgs := TAppArgs.Create();
     AppArgs.Parse();
@@ -296,6 +298,8 @@ BEGIN                                                            { ENTRY POINT }
         WriteLn();
         Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
     end;
+
+{------------------------------------------------------------------------------}
 
 END.                                                                     { END }
 

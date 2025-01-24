@@ -49,14 +49,14 @@ const
     { The version component: Patch. }
     PROG_VERSION_PATCH = 2;
 
-{
-    Returns information about program version as a human readable string.
-}
+{ Returns information about program version as a human readable string. }
 function GetVersion(Debug: Boolean): String;
 
 {------------------------------------------------------------------------------}
 
 IMPLEMENTATION                                                { IMPLEMENTATION }
+
+{------------------------------------------------------------------------------}
 
 uses Mikhan.Util.AppVersion;
 
@@ -67,6 +67,8 @@ begin
         PROG_VERSION_MINOR, PROG_VERSION_PATCH);
     Result:= AppVer.ToString();
 end;
+
+{------------------------------------------------------------------------------}
 
 END.                                                                     { END }
 
