@@ -63,9 +63,10 @@ uses Mikhan.Util.AppVersion;
 function GetVersion(Debug: Boolean): String;
 var AppVer: TSemVer;
 begin
-    AppVer := TSemVer.Create(Debug, PROG_VERSION_MAJOR,
-        PROG_VERSION_MINOR, PROG_VERSION_PATCH);
+    AppVer := TSemVer.Create(Debug, PROG_VERSION_MAJOR, PROG_VERSION_MINOR,
+        PROG_VERSION_PATCH);
     Result:= AppVer.ToString();
+    AppVer.Free();
 end;
 
 {------------------------------------------------------------------------------}
