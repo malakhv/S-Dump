@@ -44,67 +44,64 @@ uses
     SysUtils, Classes, Pipes, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
     Mikhan.Util.StrUtils, Mikhan.Util.Dump;
 
+{
+    Internal Program Data
+}
 const
-
-    { The name of this program. }
-    PROG_NAME = 'S-Dump';
-
-    { The author of this program. }
-    PROG_AUTHOR = 'Mikhail.Malakhov';
-
-    { The copyright string. }
-    PROG_COPYRIGHT = 'Copyright (C) 1996-2025 Mikhail Malakhov ' +
-        '<malakhv@gmail.com>';
 
     { The common debug flag. }
-    DEBUG = False;
-
-const
+    DEBUG = True;
 
     { The maximum bytes to processing. }
     MAX_BYTES = 4096;
 
-{ Program command line arguments }
+{
+    About this Program
+}
 const
 
-    { Program option: A limit of bytes processing, short format. }
-    OPT_LIMIT_SHORT = '-l';
-    { Program option: A limit of bytes processing, long format. }
-    OPT_LIMIT_LONG = '--limit';
+    { The name of this Program. }
+    PROG_NAME = 'S-Dump';
 
-    { Program option: An offset from file beginning to process, short format. }
-    OPT_OFFSET_SHORT = '-s';
-    { Program option: An offset from file beginning to process, long format. }
-    OPT_OFFSET_LONG = '--skip';
+    { The author of this Program. }
+    PROG_AUTHOR = 'Mikhail.Malakhov';
 
-    { Program option: Represents all data as a char array, short format. }
-    OPT_CHAR_SHORT = '-c';
-    { Program option: Represents all data as a char array, long format. }
-    OPT_CHAR_LONG = '--char';
-
-    { Program option: Use specified text as a program data source, short
-      format. This option has a higher priority than file name or pipe
-      data. }
-    OPT_TEXT_SHORT = '-t';
-    { Program option: Use specified text as a program data source, long
-      format. This option has a higher priority than file name or pipe
-      data. }
-    OPT_TEXT_LONG = '--text';
-
-    { Program option: Search something into data, short format. }
-    OPT_FIND_SHORT = '-f';
-    { Program option: Search something into data, long format. }
-    OPT_FIND_LONG = '--find';
-
-{ Program commands }
-const
-
-    { Program command: any actions for testing. }
-    CMD_TEST = 'test';
+    { The copyright string. }
+    PROG_COPYRIGHT = 'Copyright (C) 1996-2025 Mikhail Malakhov, ' +
+        'http://mikhan.me/';
 
 {------------------------------------------------------------------------------}
+{ Options and Arguments                                                        }
+{------------------------------------------------------------------------------}
 
-{ Program command line arguments }
+const
+
+    { Option: A limit of bytes processing. }
+    OPT_LIMIT_SHORT = '-l';
+    OPT_LIMIT_LONG = '--limit';
+
+    { Option: An offset from file beginning to process. }
+    OPT_OFFSET_SHORT = '-s';
+    OPT_OFFSET_LONG = '--skip';
+
+    { Option: Represents all data as a char array, short format. }
+    OPT_CHAR_SHORT = '-c';
+    OPT_CHAR_LONG = '--char';
+
+    { Option: Use specified text as a program data source. This option
+      has a higher priority than file name or pipe data. }
+    OPT_TEXT_SHORT = '-t';
+    OPT_TEXT_LONG = '--text';
+
+    { Option: Search something into data source. }
+    OPT_FIND_SHORT = '-f';
+    OPT_FIND_LONG = '--find';
+
+const
+
+    { Command: Any actions for testing. }
+    CMD_TEST = 'test';
+
  var
     AppArgs: TAppArgs;          // Program command line arguments/options
     OptLimit: Integer;          // See Limit program option
@@ -125,12 +122,12 @@ var
     InStream: TStream;
 
 {------------------------------------------------------------------------------}
+{ Global Scope                                                                 }
+{------------------------------------------------------------------------------}
 
-{
-    Loads raw data from stream.
-}
+{ Loads raw data from stream. }
 function LoadData(const Stream: TStream; Offset: Integer; Limit: Integer;
-    var Buf: array of byte): Integer;
+    var Buf: Array of Byte): Integer;
 var Size, StreamSize: Integer;
 begin
     Result := 0;
