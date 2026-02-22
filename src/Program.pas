@@ -40,7 +40,8 @@ PROGRAM sdump;                                                       { PROGRAM }
 {$H+}
 {$T+}
 
-uses
+USES                                                                    { USES }
+
     SysUtils, Classes, Pipes, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
     Mikhan.Util.StrUtils, Mikhan.Util.Dump;
 
@@ -53,7 +54,7 @@ const
     DEBUG = True;
 
     { The maximum bytes to processing. }
-    MAX_BYTES = 4096;
+    MAX_BYTES = 8192;
 
 {
     About this Program
@@ -112,7 +113,10 @@ const
     OptInputFile: TArgument;    // See FILE_NAME program option
     HasPipe: Boolean;           // True, if we have a pipe data
 
-{ Global Scope }
+{------------------------------------------------------------------------------}
+{ Global Scope                                                                 }
+{------------------------------------------------------------------------------}
+
 var
     I: Integer;
     Data: Array of Byte;
@@ -122,14 +126,14 @@ var
     InStream: TStream;
 
 {------------------------------------------------------------------------------}
-{ Global Scope                                                                 }
+{ Procedures and Functions                                                     }
 {------------------------------------------------------------------------------}
 
 { Loads raw data from stream. }
 function LoadData(const Stream: TStream; Offset: Integer; Limit: Integer;
     var Buf: Array of Byte): Integer;
 var
-    Size, StreamSize: Integer;
+    ReadSize, StreamSize: Integer;
 begin
     Result := 0;
 
@@ -145,9 +149,9 @@ begin
     if (Limit <= 0) or (Limit > MAX_BYTES) then Limit := MAX_BYTES;
 
     // How many bytes we want to read?
-    Size := Length(Buf);
-    if Size > Limit then Size := Limit;
-    if Size > StreamSize then Size := StreamSize;
+    ReadSize := Length(Buf);
+    if ReadSize > Limit then ReadSize := Limit;
+    if ReadSize > StreamSize then ReadSize := StreamSize;
 
     // Need to print logs?
     if OptVerbose then
@@ -155,14 +159,14 @@ begin
         Write('LoadData {');
         Write('Offset=', Offset,', ');
         Write('Limit=', Limit,', ');
-        Write('Size=', Size,', ');
+        Write('ReadSize=', ReadSize,', ');
         WriteLn('StreamSize=', StreamSize,'}');
     end;
 
     // Read data
     try
         if Offset > 0 then Stream.Seek(Offset, soBeginning);
-        Result := Stream.Read(Buf, Size);
+        Result := Stream.Read(Buf, ReadSize);
     except
         WriteLn(MSG_CANNOT_READ_DATA);
         Result := 0;
