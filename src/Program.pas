@@ -128,7 +128,8 @@ var
 { Loads raw data from stream. }
 function LoadData(const Stream: TStream; Offset: Integer; Limit: Integer;
     var Buf: Array of Byte): Integer;
-var Size, StreamSize: Integer;
+var
+    Size, StreamSize: Integer;
 begin
     Result := 0;
 
@@ -219,8 +220,6 @@ end;
 {------------------------------------------------------------------------------}
 
 BEGIN                                                            { ENTRY POINT }
-
-{------------------------------------------------------------------------------}
 
     // Parse input arguments
     AppArgs := TAppArgs.Create();
@@ -355,8 +354,6 @@ BEGIN                                                            { ENTRY POINT }
         WriteLn();
         Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
     end;
-
-{------------------------------------------------------------------------------}
 
 END.                                                                     { END }
 
