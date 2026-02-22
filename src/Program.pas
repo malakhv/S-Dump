@@ -20,11 +20,14 @@
 {------------------------------------------------------------------------------}
 
 {------------------------------------------------------------------------------}
-{ Small program to see and save to external file a dump (like in hex editors)  }
-{ of any file. It can be useful to investigate file formats and reverse        }
-{ engineering.                                                                 }
+{ A small program for viewing and saving dump (like in hex editors) of any     }
+{ files. It can be useful to investigate file formats and reverse engineering. }
+{                                                                              }
+{ Project: S-Dump                                                              }
+{ Package: None                                                                }
 {                                                                              }
 { Dependencies: ProgVer, ProgMsg, Mikhan.Util.*                                }
+{ Operating Systems: Win, Linux, MacOS                                         }
 {                                                                              }
 { Created: 03.11.2022                                                          }
 { Authors: Mikhail.Malakhov                                                    }
