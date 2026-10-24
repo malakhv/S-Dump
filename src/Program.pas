@@ -43,7 +43,7 @@ PROGRAM sdump;                                                       { PROGRAM }
 USES                                                                    { USES }
 
     SysUtils, Classes, Pipes, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
-    Mikhan.Utils.StrUtils, Mikhan.Utils.Dump;
+    Mikhan.Utils.StrUtils, Mikhan.Utils.Dump, Mikhan.Utils.Pipes;
 
 {
     Internal Program Data

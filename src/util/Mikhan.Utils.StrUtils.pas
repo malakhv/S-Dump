@@ -43,7 +43,7 @@
 { Authors: Mikhail.Malakhov                                                    }
 {------------------------------------------------------------------------------}
 
-Unit Mikhan.Utils.StrUtils;                                             { UNIT }
+UNIT Mikhan.Utils.StrUtils;                                             { UNIT }
 
 {$MODE DELPHI}
 {$H+}
@@ -144,7 +144,7 @@ IMPLEMENTATION                                                { IMPLEMENTATION }
 
 {------------------------------------------------------------------------------}
 
-uses SysUtils;
+USES SysUtils;
 
 procedure TrimStr(var Source: String);
 begin
@@ -186,8 +186,6 @@ begin
     for I := 0 to Count - 1 do
         Move(Source[1], Result[Len * I + 1], Len);
 end;
-
-{------------------------------------------------------------------------------}
 
 END.                                                                     { END }
 

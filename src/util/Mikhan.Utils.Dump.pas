@@ -17,9 +17,12 @@
 {  See the License for the specific language governing permissions and         }
 {  limitations under the License.                                              }
 {                                                                              }
+{  SPDX-License-Identifier: Apache-2.0                                         }
 {------------------------------------------------------------------------------}
 
 {------------------------------------------------------------------------------}
+{ Unit: Mikhan.Utils.Dump                                                      }
+{                                                                              }
 { The Unit contains methods to print raw data in hexadecimal format (dump,     }
 { like in hex editors).                                                        }
 {                                                                              }
@@ -31,7 +34,7 @@
 { Author: Mikhail.Malakhov                                                     }
 {------------------------------------------------------------------------------}
 
-unit Mikhan.Utils.Dump;
+UNIT Mikhan.Utils.Dump;                                                 { UNIT }
 
 {$MODE DELPHI}
 {$H+}
@@ -71,7 +74,7 @@ IMPLEMENTATION                                                { IMPLEMENTATION }
 
 {------------------------------------------------------------------------------}
 
-uses SysUtils, Mikhan.Utils.StrUtils;
+USES SysUtils, Mikhan.Utils.StrUtils;
 
 const
     BYTES_PER_ROW = 16;
@@ -176,8 +179,6 @@ begin
     WriteRow(RowAddress, StrOut);
 end;
 
-end.
+END.                                                                     { END }
 
-{------------------------------------------------------------------------------}
-{ END                                                                          }
 {------------------------------------------------------------------------------}
