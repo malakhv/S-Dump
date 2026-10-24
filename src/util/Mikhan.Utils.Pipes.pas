@@ -25,10 +25,12 @@
 {                                                                              }
 { The Unit contains stuff to pipes support.                                    }
 {                                                                              }
-{ Dependencies: Pipes, BaseUnix, Windows                                       }
+{ Dependencies:                                                                }
+{   - Unix: BaseUnix, Termio                                                   }
+{   - Windows: Windows                                                         }
 {                                                                              }
 { Created: 23.10.2026                                                          }
-{ Author: Mikhail.Malakhov                                                     }
+{ Authors: Mikhail.Malakhov                                                    }
 {------------------------------------------------------------------------------}
 
 UNIT Mikhan.Utils.Pipes;                                                { UNIT }
@@ -38,9 +40,11 @@ UNIT Mikhan.Utils.Pipes;                                                { UNIT }
 
 INTERFACE                                                          { INTERFACE }
 
-{
+{ Returns True if standard input is redirected to a file, pipe, socket,
+  or another supported non-terminal device.
 
-}
+  Does not check whether data is available; reading may block.
+  Returns False if standard input is a terminal or cannot be inspected. }
 function HasRedirectedInput: Boolean;
 
 {------------------------------------------------------------------------------}
@@ -58,15 +62,16 @@ USES
 {------------------------------------------------------------------------------}
 
 {$IFDEF UNIX}
-function HasRedirectedInputNix: Boolean;
+function HasRedirectedInputUnix: Boolean;
 var
     Info: Stat;
 begin
     Result := False;
     if FpFStat(StdInputHandle, Info) <> 0 then Exit;
 
-    Result := fpS_ISFIFO(Info.st_mode) or fpS_ISREG(Info.st_mode) or
-        (fpS_ISCHR(Info.st_mode) and (Termio.IsATTY(StdInputHandle) = 0));
+    Result := fpS_ISFIFO(Info.st_mode) or fpS_ISREG(Info.st_mode)
+        or fpS_ISSOCK(Info.st_mode) or
+            (fpS_ISCHR(Info.st_mode) and (Termio.IsATTY(StdInputHandle) = 0));
 end;
 {$ENDIF}
 
@@ -83,7 +88,7 @@ end;
 function HasRedirectedInput: Boolean;
 begin
     {$IFDEF UNIX}
-    Result := HasRedirectedInputNix();
+    Result := HasRedirectedInputUnix();
     {$ENDIF}
     {$IFDEF MSWINDOWS}
     Result := HasRedirectedInputWin();
