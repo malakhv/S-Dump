@@ -43,7 +43,7 @@ PROGRAM sdump;                                                       { PROGRAM }
 USES                                                                    { USES }
 
     SysUtils, Classes, Pipes, ProgVer, ProgMsg, Mikhan.Util.AppArgs,
-    Mikhan.Util.StrUtils, Mikhan.Util.Dump;
+    Mikhan.Utils.StrUtils, Mikhan.Utils.Dump;
 
 {
     Internal Program Data
@@ -260,7 +260,7 @@ BEGIN                                                            { ENTRY POINT }
     if AppArgs.Has(OPT_LIMIT_SHORT, OPT_LIMIT_LONG) then
     begin
         Tmp := AppArgs.GetValue(OPT_LIMIT_SHORT, OPT_LIMIT_LONG);
-        if not Mikhan.Util.StrUtils.IsEmpty(Tmp) then
+        if not Mikhan.Utils.StrUtils.IsBlank(Tmp) then
             OptLimit := StrToInt(Tmp)
         else
             OptLimit := 0;
@@ -270,7 +270,7 @@ BEGIN                                                            { ENTRY POINT }
     if AppArgs.Has(OPT_OFFSET_SHORT, OPT_OFFSET_LONG) then
     begin
         Tmp := AppArgs.GetValue(OPT_OFFSET_SHORT, OPT_OFFSET_LONG);
-        if not Mikhan.Util.StrUtils.IsEmpty(Tmp) then
+        if not Mikhan.Utils.StrUtils.IsBlank(Tmp) then
             OptOffset := StrToInt(Tmp)
         else
             OptOffset := 0;
@@ -280,7 +280,7 @@ BEGIN                                                            { ENTRY POINT }
     if AppArgs.Has(OPT_FIND_SHORT, OPT_FIND_LONG) then
     begin
         Tmp := AppArgs.GetValue(OPT_FIND_SHORT, OPT_FIND_LONG);
-        if not Mikhan.Util.StrUtils.IsEmpty(Tmp) then
+        if not Mikhan.Utils.StrUtils.IsBlank(Tmp) then
             OptFind := StrToInt(Tmp)
         else
             OptFind := -1; // Search first not 0 value
@@ -309,7 +309,7 @@ BEGIN                                                            { ENTRY POINT }
         WasRead := LoadData(InStream, OptOffset, OptLimit, Data);
         SetLength(Data, WasRead);
         WriteLn();
-        Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
+        Mikhan.Utils.Dump.Dump(Data, OptOffset, 0, OptFormat);
         Exit;
     end;
 
@@ -323,7 +323,7 @@ BEGIN                                                            { ENTRY POINT }
         WasRead := LoadData(InPipe, OptOffset, OptLimit, Data);
         SetLength(Data, WasRead);
         WriteLn();
-        Mikhan.Util.Dump.Dump(Data, OptOffset, OptLimit, OptFormat);
+        Mikhan.Utils.Dump.Dump(Data, OptOffset, OptLimit, OptFormat);
         Exit;
     end;
 
@@ -338,7 +338,7 @@ BEGIN                                                            { ENTRY POINT }
             break;
         end;
     end;
-    if Mikhan.Util.StrUtils.IsEmpty(OptInputFile.Key) then
+    if Mikhan.Utils.StrUtils.IsBlank(OptInputFile.Key) then
     begin
         WriteLn(MSG_NO_INPUT); Exit;
     end;
@@ -356,7 +356,7 @@ BEGIN                                                            { ENTRY POINT }
     begin
         SetLength(Data, WasRead);
         WriteLn();
-        Mikhan.Util.Dump.Dump(Data, OptOffset, 0, OptFormat);
+        Mikhan.Utils.Dump.Dump(Data, OptOffset, 0, OptFormat);
     end;
 
 END.                                                                     { END }

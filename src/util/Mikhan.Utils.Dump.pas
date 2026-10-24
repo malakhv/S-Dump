@@ -23,7 +23,7 @@
 { The Unit contains methods to print raw data in hexadecimal format (dump,     }
 { like in hex editors).                                                        }
 {                                                                              }
-{ Package: Mikhan.Util                                                         }
+{ Package: Mikhan.Utils                                                        }
 { Types: TDumpOutFormat                                                        }
 { Dependencies: SysUtils, ProgPipes                                            }
 {                                                                              }
@@ -31,7 +31,7 @@
 { Author: Mikhail.Malakhov                                                     }
 {------------------------------------------------------------------------------}
 
-unit Mikhan.Util.Dump;
+unit Mikhan.Utils.Dump;
 
 {$MODE DELPHI}
 {$H+}
