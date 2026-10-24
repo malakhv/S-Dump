@@ -25,7 +25,7 @@
 {                                                                              }
 { Package: Mikhan.Util                                                         }
 { Types: TDumpOutFormat                                                        }
-{ Dependencies: Mikhan.Util.StrUtils                                           }
+{ Dependencies: SysUtils, ProgPipes                                            }
 {                                                                              }
 { Created: 14.08.2023                                                          }
 { Author: Mikhail.Malakhov                                                     }
@@ -71,9 +71,15 @@ IMPLEMENTATION                                                { IMPLEMENTATION }
 
 {------------------------------------------------------------------------------}
 
-uses SysUtils, Mikhan.Util.StrUtils;
+uses SysUtils;
 
-const BYTES_PER_ROW = 16;
+const
+    BYTES_PER_ROW = 16;
+    ADDRESS_SIZE = 8;
+    CELL_SIZE = 3;
+    PREFIX_SIZE = ADDRESS_SIZE + 2; // Address + '| '
+    SEPARATOR_SIZE =
+        PREFIX_SIZE + BYTES_PER_ROW * CELL_SIZE - 1;
 
 { Makes a symbol to output. }
 function MakeSymbol(Value: Byte; Format: TDumpOutFormat): String;
@@ -129,7 +135,8 @@ var
     COL, Count, RowAddress, StartColumn, I: Integer;
 
 begin
-    // Calc initial parameters
+
+    // Initial parameters
     if Offset < 0 then Offset := 0;
     RowAddress := (Offset div BYTES_PER_ROW) * BYTES_PER_ROW;
     StartColumn := Offset mod BYTES_PER_ROW;
@@ -164,6 +171,7 @@ begin
         Write(MakeSymbol(Source[I], Format), CHAR_SPACE);
         Inc(COL);
     end;
+    // Last empty string
     Writeln();
 end;
 
