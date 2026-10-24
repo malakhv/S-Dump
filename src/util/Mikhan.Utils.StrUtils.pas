@@ -110,7 +110,7 @@ const
     CHAR_BACK_SLASH = '\';
 
     { The vertical bar. }
-    CHAR_VERT_SLASH = '|';
+    CHAR_VERT_BAR = '|';
 
     { The tilde. }
     CHAR_TILDE = '~';

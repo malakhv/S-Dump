@@ -71,7 +71,7 @@ IMPLEMENTATION                                                { IMPLEMENTATION }
 
 {------------------------------------------------------------------------------}
 
-uses SysUtils;
+uses SysUtils, Mikhan.Utils.StrUtils;
 
 const
     BYTES_PER_ROW = 16;
@@ -118,21 +118,25 @@ procedure Dump(const Source: Array of Byte; Offset, Limit: Integer;
     procedure Header();
     var i: Integer;
     begin
-        Write(EMPTY:10);
+        Write(EMPTY:PREFIX_SIZE);
         for i := 0 to BYTES_PER_ROW - 1 do
             Write(IntToHex(i, 2), CHAR_SPACE);
         WriteLn();
-        Write(RepeatString('-', 57));
+        WriteLn(RepeatString('-', SEPARATOR_SIZE));
     end;
 
-    procedure NewRow(Address: Integer);
+    procedure WriteRow(Address: Int64; const Value: String);
     begin
-        WriteLn();
-        Write(IntToHex(Address, 8), CHAR_VERT_SLASH, CHAR_SPACE);
+        if Value <> '' then
+            WriteLn(IntToHex(Address, ADDRESS_SIZE), CHAR_VERT_BAR,
+                CHAR_SPACE, Value);
     end;
 
 var
-    COL, Count, RowAddress, StartColumn, I: Integer;
+    StrOut: String;
+    Count, I: SizeInt;
+    RowAddress: Int64;
+    COL, StartColumn: Integer;
 
 begin
 
@@ -140,21 +144,19 @@ begin
     if Offset < 0 then Offset := 0;
     RowAddress := (Offset div BYTES_PER_ROW) * BYTES_PER_ROW;
     StartColumn := Offset mod BYTES_PER_ROW;
-    
+
     // How many data we should process?
     Count := Length(Source);
-    if (Limit > 0) and (Limit < Count) then
-        Count := Limit;
+    if (Limit > 0) and (Limit < Count) then Count := Limit;
 
     // Start printing
     Header();
-    NewRow(RowAddress);
     COL := StartColumn;
 
     // Empty columns before the first byte
+    StrOut := '';
     if Count > 0 then
-        for I := 1 to StartColumn do
-            Write(EMPTY:3);
+        StrOut := RepeatString(CHAR_SPACE, StartColumn * CELL_SIZE);
 
     // Print data
     for I := 0 to Count - 1 do
@@ -162,21 +164,20 @@ begin
         // Should we go to a new row?
         if COL >= BYTES_PER_ROW then
         begin
+            WriteRow(RowAddress, StrOut);
             RowAddress := RowAddress + BYTES_PER_ROW;
-            NewRow(RowAddress);
+            StrOut := '';
             COL := 0;
         end;
-    
-        // Print value
-        Write(MakeSymbol(Source[I], Format), CHAR_SPACE);
+        StrOut := StrOut + MakeSymbol(Source[I], Format) + CHAR_SPACE;
         Inc(COL);
     end;
-    // Last empty string
-    Writeln();
+    // Last row
+    WriteRow(RowAddress, StrOut);
 end;
 
 end.
 
-{-------------------------------------------------------------------------}
-{ END                                                                     }
-{-------------------------------------------------------------------------}
+{------------------------------------------------------------------------------}
+{ END                                                                          }
+{------------------------------------------------------------------------------}

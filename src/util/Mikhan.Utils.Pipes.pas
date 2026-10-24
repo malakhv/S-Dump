@@ -1,6 +1,6 @@
 {------------------------------------------------------------------------------}
 {                                                                              }
-{                                S-Dump Project                                }
+{                          Pascal Utils Library (PUL)                          }
 {                                                                              }
 {  Copyright (C) 1996-2026 Mikhail Malakhov, http://mikhan.me/                 }
 {                                                                              }
@@ -17,9 +17,12 @@
 {  See the License for the specific language governing permissions and         }
 {  limitations under the License.                                              }
 {                                                                              }
+{  SPDX-License-Identifier: Apache-2.0                                         }
 {------------------------------------------------------------------------------}
 
 {------------------------------------------------------------------------------}
+{ Unit: Mikhan.Utils.Pipes                                                     }
+{                                                                              }
 { The Unit contains stuff to pipes support.                                    }
 {                                                                              }
 { Dependencies: Pipes, BaseUnix, Windows                                       }
@@ -28,7 +31,7 @@
 { Author: Mikhail.Malakhov                                                     }
 {------------------------------------------------------------------------------}
 
-UNIT ProgPipes;                                                         { UNIT }
+UNIT Mikhan.Utils.Pipes;                                                { UNIT }
 
 {$MODE DELPHI}
 {$H+}
