@@ -70,8 +70,8 @@ begin
     if FpFStat(StdInputHandle, Info) <> 0 then Exit;
 
     Result := fpS_ISFIFO(Info.st_mode) or fpS_ISREG(Info.st_mode)
-        or fpS_ISSOCK(Info.st_mode) or
-            (fpS_ISCHR(Info.st_mode) and (Termio.IsATTY(StdInputHandle) = 0));
+        or fpS_ISSOCK(Info.st_mode)
+        or (fpS_ISCHR(Info.st_mode) and (Termio.IsATTY(StdInputHandle) = 0));
 end;
 {$ENDIF}
 
